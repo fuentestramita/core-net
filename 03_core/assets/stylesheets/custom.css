@@ -1,1 +1,232 @@
 /* put your own styles to customize and override the theme */
+
+
+.form-label-xs {
+	width: 40px;
+	display: inline-block;
+	margin-bottom: .2rem;
+	-webkit-box-shadow: 0 0 0 1px #fff,0 0 0 1px rgba(183,107,163,.25);
+	box-shadow: 0 0 0 1px #fff,0 0 0 1px rgba(183,107,163,.25);
+	font-size: 0.60rem;
+	font-weight: normal;
+	color: dimgray;
+	text-transform: uppercase;
+}
+
+
+.form-label-sm {
+	width: 50px;
+	display: inline-block;
+	margin-bottom: .2rem;
+	-webkit-box-shadow: 0 0 0 1px #fff,0 0 0 1px rgba(183,107,163,.25);
+	box-shadow: 0 0 0 1px #fff,0 0 0 1px rgba(183,107,163,.25);
+	font-size: 0.60rem;
+	font-weight: normal;
+	color: dimgray;
+	text-transform: uppercase;
+}
+
+.form-label-md {
+	width: 150px;
+	display: inline-block;
+	margin-bottom: .2rem;
+	-webkit-box-shadow: 0 0 0 1px #fff,0 0 0 1px rgba(183,107,163,.25);
+	box-shadow: 0 0 0 1px #fff,0 0 0 1px rgba(183,107,163,.25);
+	font-size: 0.60rem;
+	font-weight: normal;
+	color: dimgray;
+	text-transform: uppercase;
+}
+
+.form-label-lg {
+	width: 185px;
+	display: inline-block;
+	margin-bottom: .2rem;
+	-webkit-box-shadow: 0 0 0 1px #fff,0 0 0 1px rgba(183,107,163,.25);
+	box-shadow: 0 0 0 1px #fff,0 0 0 1px rgba(183,107,163,.25);
+	font-size: 0.60rem;
+	font-weight: normal;
+	color: dimgray;
+	text-transform: uppercase;
+}
+
+
+
+
+.form-input-xs {
+	width: 50px;
+	padding: .175rem .75rem;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	color: #28313b;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d4d5d7;
+	border-radius: .25rem;
+	-webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+
+
+.form-input-sm {
+	width: 100px;
+	padding: .175rem .75rem;
+	font-size: 0.75rem;
+	color: dimgray;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d4d5d7;
+	border-radius: .25rem;
+	-webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .5s ease-in-out;
+	transition: border-color .15s ease-in-out,-webkit-box-shadow .5s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .5s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .5s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	text-transform: uppercase;
+}
+
+.form-input-md {
+	width: 100px;
+	padding: .175rem .75rem;
+	font-size: 0.75rem;
+	color: dimgray;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d4d5d7;
+	border-radius: .25rem;
+	-webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .5s ease-in-out;
+	transition: border-color .15s ease-in-out,-webkit-box-shadow .5s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .5s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .5s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	text-transform: uppercase;
+}
+
+
+
+.form-input-lg {
+	width: 205px;
+	padding: .175rem .75rem;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	color: #28313b;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d4d5d7;
+	border-radius: .25rem;
+	-webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	text-transform: uppercase;
+}
+
+.form-input-xl {
+	width: 255px;
+	padding: .175rem .75rem;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	color: #28313b;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d4d5d7;
+	border-radius: .25rem;
+	-webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	text-transform: uppercase;
+}
+
+.form-input-xxl {
+	width: 325px;
+	padding: .175rem .75rem;
+	font-size: 0.75rem;
+	line-height: 1.5;
+	color: #28313b;
+	background-color: #fff;
+	background-clip: padding-box;
+	border: 1px solid #d4d5d7;
+	border-radius: .25rem;
+	-webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	text-transform: uppercase;
+}
+
+
+.form-group {
+	margin-bottom: .25rem;
+}
+
+.page-title {
+	font-size:1.4rem;
+}
+.card-body {
+	padding:.55rem
+}
+
+.page-title-bar {
+	margin-bottom: .5rem;
+	padding: 0 0rem;
+}
+
+.btn-group {
+		display:inline;
+}
+
+.btn-xs {
+	display: inline-block;
+	font-weight: 400;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: .275rem .50rem .275rem .65rem;
+	line-height: 1.25;
+	border-radius: .25rem;
+	-webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+
+
+.btn {
+	display: inline-block;
+	font-weight: 400;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: .375rem .75rem;
+	font-size: 1rem;
+	line-height: 1.5;
+	border-radius: .25rem;
+	-webkit-transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+}
+
+
+.btn-danger {
+	color: #fff;
+	background-color: #c90303;
+	border-color: #780000;
+}
+
+	.btn-danger:hover {
+		color: #fff;
+		background-color: #660000;
+		border-color: #3f0000;
+	}

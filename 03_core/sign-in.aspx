@@ -10,30 +10,13 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<!-- End Required meta tags -->
 	<!-- Begin SEO tag -->
-	<title> CORE Tramita SpA </title>
+	<title>CORE Tramita SpA </title>
 	<meta property="og:title" content="Sign In">
-	<meta name="author" content="Beni Arisandi">
+	<meta name="author" content="Mario Granger">
 	<meta property="og:locale" content="en_US">
 	<meta name="description" content="Sistema de gestion de informacion">
 	<meta property="og:description" content="Sistema de gestion de informacion">
-	<link rel="canonical" href="//uselooper.com">
-	<meta property="og:url" content="//uselooper.com">
 	<meta property="og:site_name" content="Sistema de gestion de informacion">
-	<script type="application/ld+json">
-      {
-        "name": "Looper - Bootstrap 4 Admin Theme",
-        "description": "Responsive admin theme build on top of Bootstrap 4",
-        "author":
-        {
-          "@type": "Person",
-          "name": "Beni Arisandi"
-        },
-        "@type": "WebSite",
-        "url": "",
-        "headline": "Sign In",
-        "@context": "http://schema.org"
-      }
-    </script>
 	<!-- End SEO tag -->
 	<!-- Favicons -->
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/apple-touch-icon.png">
@@ -47,6 +30,7 @@
 	<link rel="stylesheet" href="assets/stylesheets/main.min.css">
 	<link rel="stylesheet" href="assets/stylesheets/custom.css">
 	<!-- END THEME STYLES -->
+
 </head>
 <body>
 	<!-- .auth -->
@@ -57,7 +41,7 @@
 				<div class="mb-3">
 					<img class="rounded" src="assets/apple-touch-icon.png" alt="" height="72">
 				</div>
-				<h1 class="h3">Ingreso </h1>
+				<h1 class="h3">INGRESO </h1>
 			</div>
 			<p class="text-left mb-4">
 				No tienes cuenta?
@@ -66,19 +50,22 @@
 			</p>
 			<!-- .form-group -->
 			<div class="form-group mb-4">
-				<label class="d-block text-left" for="inputUser">Usuario</label>
-				<input type="text" id="inputUser" class="form-control form-control-lg" required="" autofocus="">
+				<label class="d-block text-left" for="txtUser">Usuario</label>
+				<asp:TextBox ID="txtUser" CssClass="form-control form-control-lg" runat="server" required="" autofocus=""></asp:TextBox>
+
 			</div>
 			<!-- /.form-group -->
 			<!-- .form-group -->
 			<div class="form-group mb-4">
-				<label class="d-block text-left" for="inputPassword">Clave</label>
-				<input type="password" id="inputPassword" class="form-control form-control-lg" required="">
+				<label class="d-block text-left" for="txtPassword">Clave</label>
+				<asp:TextBox ID="txtPassword" CssClass="form-control form-control-lg" runat="server" TextMode="Password" required=""></asp:TextBox>
 			</div>
 			<!-- /.form-group -->
 			<!-- .form-group -->
 			<div class="form-group mb-4">
-				<asp:Button ID="btnIngresar" class="btn btn-lg btn-primary btn-block" Text="Ingresar" runat="server" OnClick="btnIngresar_Click"/>
+				<asp:Button ID="btnIngresar" class="btn btn-lg btn-primary btn-block" Text="Ingresar" runat="server" OnClick="btnIngresar_Click" />
+
+
 			</div>
 			<!-- /.form-group -->
 			<!-- .form-group -->
@@ -102,13 +89,16 @@
          
 				<a href="#">Terms</a>
 			</p>
+
+
+
 		</form>
 		<!-- /.auth-form -->
 		<!-- .auth-announcement -->
 		<section id="announcement" class="auth-announcement" style="background-image: url(assets/images/illustration/img-1.png);">
 			<div class="announcement-body">
 				<h2 class="announcement-title">Preparese para rendir en el trabajo </h2>
-				<div style="padding-left:420px">
+				<div style="padding-left: 420px">
 					<div class="text-left">
 						<ol style="list-style: decimal">
 							<li>Hacer un seguimiento del tiempo</li>
@@ -124,16 +114,17 @@
 		</section>
 		<!-- /.auth-announcement -->
 	</main>
+
+
+
+
+
 	<!-- /.auth -->
 	<!-- BEGIN PLUGINS JS -->
+	s
 	<script src="assets/vendor/particles.js/particles.min.js"></script>
-	<script>
-		/* particlesJS.load(@dom-id, @path-json, @callback (optional)); */
-		particlesJS.load('announcement', 'assets/javascript/particles.json');
-    </script>
 	<!-- END PLUGINS JS -->
 	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-116692175-1"></script>
 	<script>
 		window.dataLayer = window.dataLayer || [];
 
@@ -143,5 +134,7 @@
 		gtag('js', new Date());
 		gtag('config', 'UA-116692175-1');
 	</script>
+
+
 </body>
 </html>

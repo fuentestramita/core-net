@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "03_core", "03_core\", "{33D3C65D-6F82-427B-B4B8-FFC5803B6B90}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8.1"
+		ProjectReferences = "{1E9DA3F2-EB81-4B65-A9D8-75B3B3F805E1}|00_Utilities.dll;{c5536d4a-8a35-4ca8-a57c-efb96fefd8e2}|02_BusinessLayer.dll;{460C2A9F-C8B8-4674-B431-223A743E2482}|01_DataLayer.dll;{7885f1cd-761e-4c5b-9d69-b06c90656f4d}|04 Model.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_60502"
 		Debug.AspNetCompiler.PhysicalPath = "03_core\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_60502\"
@@ -31,6 +32,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "01_DataLayer", "01_DataLaye
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "02_BusinessLayer", "02_BusinessLayer\02_BusinessLayer.csproj", "{C5536D4A-8A35-4CA8-A57C-EFB96FEFD8E2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "04_Model", "04 Model\04_Model.csproj", "{7885F1CD-761E-4C5B-9D69-B06C90656F4D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +56,10 @@ Global
 		{C5536D4A-8A35-4CA8-A57C-EFB96FEFD8E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5536D4A-8A35-4CA8-A57C-EFB96FEFD8E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5536D4A-8A35-4CA8-A57C-EFB96FEFD8E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7885F1CD-761E-4C5B-9D69-B06C90656F4D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7885F1CD-761E-4C5B-9D69-B06C90656F4D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7885F1CD-761E-4C5B-9D69-B06C90656F4D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7885F1CD-761E-4C5B-9D69-B06C90656F4D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
