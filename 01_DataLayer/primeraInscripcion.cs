@@ -107,6 +107,7 @@ namespace DataLayer
 			dAccess.AddParameter(ref pPos, "@chkCI", modeloPrimeraInscripcion.chkCI, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@DireccionClienteID", modeloPrimeraInscripcion.DireccionClienteID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@ContactoClienteID", modeloPrimeraInscripcion.ContactoClienteID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@DireccionAdquirenteID", modeloPrimeraInscripcion.DireccionAdquirenteID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 
 			return dAccess.getData("INS_PrimeraInscripcion", Param).Tables[0];
 

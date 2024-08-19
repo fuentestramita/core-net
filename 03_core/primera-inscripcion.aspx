@@ -151,7 +151,7 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">RUT Cliente</label>
-							<asp:TextBox ID="ClienteID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtClienteID" Visible="false" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtRUTCliente" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -170,7 +170,7 @@
 							<label class="form-label-md" for="select2-data-remote" style="margin-left: 47px">Complemento</label>
 						</div>
 						<div class="form-group">
-							<asp:TextBox ID="DireccionClienteID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtDireccionClienteID" Visible="false" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtDireccionCliente" CssClass="form-input-lg flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtNumeroDireccionCliente" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtComplementoDireccionCliente" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
@@ -189,7 +189,7 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">Rut Representante Legal</label>
-							<asp:TextBox ID="RepresentanteLegalID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtRepresentanteLegalID" Visible="false" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtRUTRepresentanteLegal" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -634,7 +634,7 @@
 						<!-- form -->
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">RUT</label>
-							<asp:TextBox ID="AdquirenteID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtAdquirenteID" Visible="false" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtRutAdquirente" CssClass="form-input-lg flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -651,7 +651,7 @@
 							<label class="form-label-md" for="select2-data-remote" style="margin-left: 47px">Complemento</label>
 						</div>
 						<div class="form-group">
-							<asp:TextBox ID="DireccionAdquirenteID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtDireccionAdquirenteID" Visible="false" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtDireccionAdquirente" CssClass="form-input-lg flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtNumeroDireccionAdquirente" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtComplementoDireccionAdquirente" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>

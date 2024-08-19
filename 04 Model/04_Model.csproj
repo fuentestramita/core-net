@@ -40,8 +40,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="personasEmpresas.cs" />
-    <Compile Include="contacto.cs" />
-    <Compile Include="direccion.cs" />
+    <Compile Include="modelContacto.cs" />
+    <Compile Include="modelDireccion.cs" />
     <Compile Include="modelPrimeraInscripcion.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

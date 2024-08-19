@@ -43,7 +43,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="despachos.cs" />
+    <Compile Include="personaEmpresas.cs" />
     <Compile Include="documentosRecibidos.cs" />
+    <Compile Include="direcciones.cs" />
     <Compile Include="vehiculos.cs" />
     <Compile Include="comun.cs" />
     <Compile Include="primeraInscripcion.cs" />

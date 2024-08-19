@@ -445,150 +445,249 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	protected void btnGrabarPrimera_Click(object sender, EventArgs e)
 	{
 
-
-		#region CLIENTE
-		PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
-		objPersona.PersonaEmpresaID = ClienteID.Text;
-		objPersona.RUT = txtRUTCliente.Text;
-		objPersona.NombreRazonSocial = txtNombreRazonSocialCliente.Text;
-		objPersona.FonoContacto1 = txtTelefonoContacto.Text;
-		objPersona.EMail = txtEmailContacto.Text;
-		objPersona.Direccion = txtDireccionCliente.Text;
-		objPersona.NroDireccion = txtNumeroDireccionCliente.Text;
-		objPersona.ComplementoDireccion = txtComplementoDireccionCliente.Text;
-		objPersona.ComunaID = ddlComunaCliente.SelectedValue;
-		#endregion CLIENTE
+		try
+		{
+			#region ----- DECLARACIONES  -----
+			PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
+			PrimeraInscripcionModel objprimeraInscripcion = new PrimeraInscripcionModel();
+			DireccionModel objDireccion = new DireccionModel();
+			ContactoModel objContacto = new ContactoModel();
+			DataTable dtDatos;
+			#endregion ----- END DECLARACIONES -----
 
 
-		#region REPRESENTANTE LEGAL
-		objPersona.PersonaEmpresaID = RepresentanteLegalID.Text;
-		objPersona.RUT = txtRUTRepresentanteLegal.Text;
-		objPersona.NombreRazonSocial = txtNombreRepresentanteLegal.Text;
-
-		#endregion REPRESENTANTE LEGAL
-
-		#region ADQUIRENTE
-		objPersona.PersonaEmpresaID = AdquirenteID.Text;
-		objPersona.RUT = txtRutAdquirente.Text;
-		objPersona.NombreRazonSocial = txtNombreRazonSocialAdquirente.Text;
-		objPersona.Direccion = txtDireccionAdquirente.Text;
-		objPersona.NroDireccion = txtNumeroDireccionAdquirente.Text;
-		objPersona.ComplementoDireccion = txtComplementoDireccionAdquirente.Text;
-		objPersona.ComunaID = ddlComunaAdquirente.SelectedValue;
-		#endregion ADQUIRENTE
+			#region ---- CLIENTE ----
+			objPersona.PersonaEmpresaID = txtClienteID.Text;
+			objPersona.RUT = txtRUTCliente.Text;
+			objPersona.NombreRazonSocial = txtNombreRazonSocialCliente.Text;
+			objPersona.FonoContacto1 = txtTelefonoContacto.Text;
+			objPersona.EMail = txtEmailContacto.Text;
+			objPersona.Direccion = txtDireccionCliente.Text;
+			objPersona.NroDireccion = txtNumeroDireccionCliente.Text;
+			objPersona.ComplementoDireccion = txtComplementoDireccionCliente.Text;
+			objPersona.ComunaID = ddlComunaCliente.SelectedValue;
 
 
+			dtDatos = PersonaEmpresas.INS_PersonaEmpresa(objPersona);
+			if (dtDatos.Rows.Count > 0)
+			{
+				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+				{
+					txtClienteID.Text = dtDatos.Rows[0]["ID"].ToString();
+				}
+				else
+				{
+					throw new ApplicationException("Error al insertar Cliente");
+				}
+			}
 
-		#region PRIMERA INSCRIPCION
-		PrimeraInscripcionModel objprimeraInscripcion = new PrimeraInscripcionModel();
 
-		objprimeraInscripcion.PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
-		objprimeraInscripcion.EmpresaID = EmpresaID;
-		objprimeraInscripcion.PPU = txtPPU.Text;
-		objprimeraInscripcion.NumeroOperacion = txtNroOperacion.Text;
-		objprimeraInscripcion.Origen = txtOrigen.Text;
-		objprimeraInscripcion.NumeroFactura = txtNroFactura.Text;
-		objprimeraInscripcion.RutCliente = txtRUTCliente.Text;
-		objprimeraInscripcion.VencimientoContratoLeasing = txtVencimientoContratoLeasing.Text;
-		objprimeraInscripcion.NumeroSolicitud = txtNroSolicitud.Text;
-		objprimeraInscripcion.TieneListadoPrimeraInscripcion = chkTieneListadoPrimeraInscripcion.Checked;
-		objprimeraInscripcion.FechaSolicitudRNVM = txtFechaSolicitudRNVM.Text;
-		objprimeraInscripcion.NumeroValija = txtNroValija.Text;
-		objprimeraInscripcion.Ejecutivo = txtEjecutivo.Text;
-		objprimeraInscripcion.Sucursal = txtSucursal.Text;
-		objprimeraInscripcion.FechaRecepcionBanco = txtFechaRecepcionBanco.Text;
-		objprimeraInscripcion.FechaPadron = txtFechaPadron.Text;
-		objprimeraInscripcion.CodigoDespachoCorreo = txtCodigoDespachoCorreo.Text;
-		objprimeraInscripcion.NumeroPlacas = ddlNroPlacas.SelectedValue;
-		objprimeraInscripcion.FechaIngresoRNVM = txtFechaIngresoRNVM.Text;
-		objprimeraInscripcion.Observaciones = txtObservaciones.Text;
-		objprimeraInscripcion.CorrelativoEntrega = txtCorrelativoEntrega.Text;
-		objprimeraInscripcion.Folio = txtFolio.Text;
-		objprimeraInscripcion.FechaIngresoTAG = txtFechaIngresoTAG.Text;
-		objprimeraInscripcion.F88 = chkF88.Checked;
-		objprimeraInscripcion.ValorF88 = txtValorF88.Text;
-		objprimeraInscripcion.FLCertCum5594 = chkFotocopiaLegalizadaCert5594.Checked;
-		objprimeraInscripcion.FotocopiaRutBanco = chkFotocopiaRUTBanco.Checked;
-		objprimeraInscripcion.chk1U = chk1U.Checked;
-		objprimeraInscripcion.chk2U = chk2U.Checked;
-		objprimeraInscripcion.chk3U = chk3U.Checked;
-		objprimeraInscripcion.chk4U = chk4U.Checked;
-		objprimeraInscripcion.SolicitudPrimeraInscripcion = chkSolicitudPrimeraInscripcion.Checked;
-		objprimeraInscripcion.CertificadoLeasing = chkCertificadoLeasing.Checked;
-		objprimeraInscripcion.CertificadoCombustibles = chkCertificadoCombustibles.Checked;
-		objprimeraInscripcion.ContratoTelevia = chkContratoTelevia.Checked;
-		objprimeraInscripcion.ConvenioPAC = chkConvenioPAC.Checked;
-		objprimeraInscripcion.DispositivoTelevia = chkDispositivoTelevia.Checked;
-		objprimeraInscripcion.ContratoLeasing = chkContratoLeasing.Checked;
-		objprimeraInscripcion.Padron = chkPadron.Checked;
-		objprimeraInscripcion.PendienteContrato = chkPendienteContrato.Checked;
-		objprimeraInscripcion.PendienteAnotacionMeraTenencia = chkPendienteAnotacionMeraTenencia.Checked;
-		objprimeraInscripcion.DespachoExterno = chkDespachoExterno.Checked;
-		objprimeraInscripcion.InformativoSeguro = chkInformativoSeguro.Checked;
-		objprimeraInscripcion.VehiculoID =
-		objprimeraInscripcion.ComunaClienteID = ddlComunaCliente.SelectedValue;
-		objprimeraInscripcion.EstadoID = ddlEstado.SelectedValue;
-		objprimeraInscripcion.ObservacionID = ddlObservacionEntrega.SelectedValue;
-		objprimeraInscripcion.UsuarioID = UserID.ToString();
-		objprimeraInscripcion.ValorPrimeraInscripcionID = ddlValorPrimeraInscripcion.SelectedValue;
-		objprimeraInscripcion.ValorTramitaID = ddlValorTramita.SelectedValue;
-		objprimeraInscripcion.ValorServicioTagID = ddlValorServicioTAG.SelectedValue;
-		objprimeraInscripcion.ValorNotariaID = ddlValorNotaria.SelectedValue;
-		objprimeraInscripcion.ValorDespachoCorreoID = ddlValorDespachoCorreo.SelectedValue;
-		objprimeraInscripcion.OficinaID = ddlOficinas.SelectedValue;
-		objprimeraInscripcion.AnoProceso = ddlAnoProceso.SelectedValue;
-		objprimeraInscripcion.chkTag = chkTAG.Checked;
-		objprimeraInscripcion.chkPlacas = chkPlacas.Checked;
-		objprimeraInscripcion.chkRUT = chkRUT.Checked;
-		objprimeraInscripcion.chkEC = chkEC.Checked;
-		objprimeraInscripcion.chkCI = chkCI.Checked;
-		objprimeraInscripcion.ClienteID = ClienteID.Text;
-		objprimeraInscripcion.AdquirenteID = AdquirenteID.Text;
-		objprimeraInscripcion.RepresentanteLegalID = RepresentanteLegalID.Text;
-		objprimeraInscripcion.DireccionClienteID = DireccionClienteID.Text;
-		objprimeraInscripcion.ContactoClienteID = ContactoClienteID.Text;
+			#endregion ---- END CLIENTE ----
 
-		PrimeraInscripcion.INS_PrimeraInscripcion(objprimeraInscripcion);
-		#endregion PRIMERA INSCRIPCION
 
-		DireccionModel objDireccion = new DireccionModel();
+			#region REPRESENTANTE LEGAL
+			objPersona.PersonaEmpresaID = txtRepresentanteLegalID.Text;
+			objPersona.RUT = txtRUTRepresentanteLegal.Text;
+			objPersona.NombreRazonSocial = txtNombreRepresentanteLegal.Text;
+			objPersona.FonoContacto1 = "";
+			objPersona.FonoContacto2 = "";
+			objPersona.EMail = "";
+			objPersona.Direccion = "";
+			objPersona.NroDireccion = "";
+			objPersona.ComplementoDireccion = "";
+			objPersona.ComunaID = "0";
 
-		#region DIRECCION CLIENTE
+			dtDatos = PersonaEmpresas.INS_PersonaEmpresa(objPersona);
+			if (dtDatos.Rows.Count > 0)
+			{
+				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+				{
+					txtRepresentanteLegalID.Text = dtDatos.Rows[0]["ID"].ToString();
+				}
+				else
+				{
+					throw new ApplicationException("Error al insertar Representante Legal");
+				}
+			}
 
-		//Aqui grabar Direccion Cliente			DireccionClienteID
-		objDireccion.PersonaEmpresaID = ClienteID.Text;
-		objDireccion.DireccionID = DireccionClienteID.Text;
-		objDireccion.Direccion = txtDireccionCliente.Text;
-		objDireccion.NumeroDireccion = txtNumeroDireccionCliente.Text;
-		objDireccion.ComplementoDireccion = txtComplementoDireccionCliente.Text;
-		objDireccion.ComunaID = ddlComunaCliente.SelectedValue;
-		#endregion DIRECCION CLIENTE
+
+			#endregion REPRESENTANTE LEGAL
+
+			#region ADQUIRENTE
+			objPersona.PersonaEmpresaID = txtAdquirenteID.Text;
+			objPersona.RUT = txtRutAdquirente.Text;
+			objPersona.NombreRazonSocial = txtNombreRazonSocialAdquirente.Text;
+			objPersona.Direccion = txtDireccionAdquirente.Text;
+			objPersona.NroDireccion = txtNumeroDireccionAdquirente.Text;
+			objPersona.ComplementoDireccion = txtComplementoDireccionAdquirente.Text;
+			objPersona.ComunaID = ddlComunaAdquirente.SelectedValue;
+			objPersona.FonoContacto1 = "";
+			objPersona.FonoContacto2 = "";
+			objPersona.EMail = "";
+
+			dtDatos = PersonaEmpresas.INS_PersonaEmpresa(objPersona);
+			if (dtDatos.Rows.Count > 0)
+			{
+				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+				{
+					txtAdquirenteID.Text = dtDatos.Rows[0]["ID"].ToString();
+				}
+				else
+				{
+					throw new ApplicationException("Error al insertar Adquirente");
+				}
+			}
+			#endregion ADQUIRENTE
 
 
 
-		#region CONTACTO DIRECCION CLIENTE
-		//Aqui grabo Contacto Cliente
-		ContactoModel objContacto = new ContactoModel();
-		objContacto.DireccionID = objDireccion.DireccionID;
-		objContacto.ContactoID = ContactoClienteID.Text;
-		objContacto.Contacto = txtContacto.Text;
-		objContacto.Telefono = txtTelefonoContacto.Text;
-		objContacto.Email = txtEmailContacto.Text;
-		#endregion CONTACTO DIRECCION CLIENTE
+			#region PRIMERA INSCRIPCION
+
+			objprimeraInscripcion.PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
+			objprimeraInscripcion.EmpresaID = EmpresaID;
+			objprimeraInscripcion.PPU = txtPPU.Text;
+			objprimeraInscripcion.NumeroOperacion = txtNroOperacion.Text;
+			objprimeraInscripcion.Origen = txtOrigen.Text;
+			objprimeraInscripcion.NumeroFactura = txtNroFactura.Text;
+			objprimeraInscripcion.RutCliente = txtRUTCliente.Text;
+			objprimeraInscripcion.VencimientoContratoLeasing = txtVencimientoContratoLeasing.Text;
+			objprimeraInscripcion.NumeroSolicitud = txtNroSolicitud.Text;
+			objprimeraInscripcion.TieneListadoPrimeraInscripcion = chkTieneListadoPrimeraInscripcion.Checked;
+			objprimeraInscripcion.FechaSolicitudRNVM = txtFechaSolicitudRNVM.Text;
+			objprimeraInscripcion.NumeroValija = txtNroValija.Text;
+			objprimeraInscripcion.Ejecutivo = txtEjecutivo.Text;
+			objprimeraInscripcion.Sucursal = txtSucursal.Text;
+			objprimeraInscripcion.FechaRecepcionBanco = txtFechaRecepcionBanco.Text;
+			objprimeraInscripcion.FechaPadron = txtFechaPadron.Text;
+			objprimeraInscripcion.CodigoDespachoCorreo = txtCodigoDespachoCorreo.Text;
+			objprimeraInscripcion.NumeroPlacas = ddlNroPlacas.SelectedValue;
+			objprimeraInscripcion.FechaIngresoRNVM = txtFechaIngresoRNVM.Text;
+			objprimeraInscripcion.Observaciones = txtObservaciones.Text;
+			objprimeraInscripcion.CorrelativoEntrega = txtCorrelativoEntrega.Text;
+			objprimeraInscripcion.Folio = txtFolio.Text;
+			objprimeraInscripcion.FechaIngresoTAG = txtFechaIngresoTAG.Text;
+			objprimeraInscripcion.F88 = chkF88.Checked;
+			objprimeraInscripcion.ValorF88 = txtValorF88.Text;
+			objprimeraInscripcion.FLCertCum5594 = chkFotocopiaLegalizadaCert5594.Checked;
+			objprimeraInscripcion.FotocopiaRutBanco = chkFotocopiaRUTBanco.Checked;
+			objprimeraInscripcion.chk1U = chk1U.Checked;
+			objprimeraInscripcion.chk2U = chk2U.Checked;
+			objprimeraInscripcion.chk3U = chk3U.Checked;
+			objprimeraInscripcion.chk4U = chk4U.Checked;
+			objprimeraInscripcion.SolicitudPrimeraInscripcion = chkSolicitudPrimeraInscripcion.Checked;
+			objprimeraInscripcion.CertificadoLeasing = chkCertificadoLeasing.Checked;
+			objprimeraInscripcion.CertificadoCombustibles = chkCertificadoCombustibles.Checked;
+			objprimeraInscripcion.ContratoTelevia = chkContratoTelevia.Checked;
+			objprimeraInscripcion.ConvenioPAC = chkConvenioPAC.Checked;
+			objprimeraInscripcion.DispositivoTelevia = chkDispositivoTelevia.Checked;
+			objprimeraInscripcion.ContratoLeasing = chkContratoLeasing.Checked;
+			objprimeraInscripcion.Padron = chkPadron.Checked;
+			objprimeraInscripcion.PendienteContrato = chkPendienteContrato.Checked;
+			objprimeraInscripcion.PendienteAnotacionMeraTenencia = chkPendienteAnotacionMeraTenencia.Checked;
+			objprimeraInscripcion.DespachoExterno = chkDespachoExterno.Checked;
+			objprimeraInscripcion.InformativoSeguro = chkInformativoSeguro.Checked;
+			objprimeraInscripcion.VehiculoID =
+			objprimeraInscripcion.ComunaClienteID = ddlComunaCliente.SelectedValue;
+			objprimeraInscripcion.EstadoID = ddlEstado.SelectedValue;
+			objprimeraInscripcion.ObservacionID = ddlObservacionEntrega.SelectedValue;
+			objprimeraInscripcion.UsuarioID = UserID.ToString();
+			objprimeraInscripcion.ValorPrimeraInscripcionID = ddlValorPrimeraInscripcion.SelectedValue;
+			objprimeraInscripcion.ValorTramitaID = ddlValorTramita.SelectedValue;
+			objprimeraInscripcion.ValorServicioTagID = ddlValorServicioTAG.SelectedValue;
+			objprimeraInscripcion.ValorNotariaID = ddlValorNotaria.SelectedValue;
+			objprimeraInscripcion.ValorDespachoCorreoID = ddlValorDespachoCorreo.SelectedValue;
+			objprimeraInscripcion.OficinaID = ddlOficinas.SelectedValue;
+			objprimeraInscripcion.AnoProceso = ddlAnoProceso.SelectedValue;
+			objprimeraInscripcion.chkTag = chkTAG.Checked;
+			objprimeraInscripcion.chkPlacas = chkPlacas.Checked;
+			objprimeraInscripcion.chkRUT = chkRUT.Checked;
+			objprimeraInscripcion.chkEC = chkEC.Checked;
+			objprimeraInscripcion.chkCI = chkCI.Checked;
+			objprimeraInscripcion.ClienteID = txtClienteID.Text;
+			objprimeraInscripcion.AdquirenteID = txtAdquirenteID.Text;
+			objprimeraInscripcion.RepresentanteLegalID = txtRepresentanteLegalID.Text;
+			objprimeraInscripcion.DireccionClienteID = txtDireccionClienteID.Text;
+			objprimeraInscripcion.ContactoClienteID = ContactoClienteID.Text;
+			objprimeraInscripcion.DireccionAdquirenteID = txtDireccionAdquirenteID.Text;
+
+			 dtDatos = PrimeraInscripcion.INS_PrimeraInscripcion(objprimeraInscripcion);
+			if (dtDatos.Rows.Count > 0)
+			{
+				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+				{
+					txtPrimeraInscripcionID.Text = dtDatos.Rows[0]["ID"].ToString();
+				}
+				else
+				{
+					throw new ApplicationException("Error al insertar Primera Inscripcion") ;
+				}
+			}
+
+
+			//
+			#endregion PRIMERA INSCRIPCION
+
+
+			#region DIRECCION CLIENTE
+
+			//Aqui grabar Direccion Cliente			DireccionClienteID
+			objDireccion.PersonaEmpresaID = txtClienteID.Text;
+			objDireccion.DireccionID = txtDireccionClienteID.Text;
+			objDireccion.Direccion = txtDireccionCliente.Text;
+			objDireccion.NumeroDireccion = txtNumeroDireccionCliente.Text;
+			objDireccion.ComplementoDireccion = txtComplementoDireccionCliente.Text;
+			objDireccion.ComunaID = ddlComunaCliente.SelectedValue;
+
+			dtDatos = Direcciones.INS_Direccion(objDireccion);
+			if (dtDatos.Rows.Count > 0)
+			{
+				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+				{
+					txtDireccionClienteID.Text = dtDatos.Rows[0]["ID"].ToString();
+				}
+				else
+				{
+					throw new ApplicationException("Error al insertar Direccion Cliente");
+				}
+			}
+
+
+			#endregion DIRECCION CLIENTE
 
 
 
-		#region DIRECCION ADQUIRENTE
-		//Aqui grabar Direccion Adquirente   DireccionAdquirenteID
-		objDireccion.PersonaEmpresaID = AdquirenteID.Text;
-		objDireccion.DireccionID = DireccionAdquirenteID.Text;
-		objDireccion.Direccion = txtDireccionAdquirente.Text;
-		objDireccion.NumeroDireccion = txtNumeroDireccionAdquirente.Text;
-		objDireccion.ComplementoDireccion = txtComplementoDireccionAdquirente.Text;
-		objDireccion.ComunaID = ddlComunaAdquirente.SelectedValue;
-		#endregion DIRECCION ADQUIRENTE
+			#region DIRECCION ADQUIRENTE
+			//Aqui grabar Direccion Adquirente   DireccionAdquirenteID
+			objDireccion.PersonaEmpresaID = txtAdquirenteID.Text;
+			objDireccion.DireccionID = txtDireccionAdquirenteID.Text;
+			objDireccion.Direccion = txtDireccionAdquirente.Text;
+			objDireccion.NumeroDireccion = txtNumeroDireccionAdquirente.Text;
+			objDireccion.ComplementoDireccion = txtComplementoDireccionAdquirente.Text;
+			objDireccion.ComunaID = ddlComunaAdquirente.SelectedValue;
 
 
+			dtDatos = Direcciones.INS_Direccion(objDireccion);
+			if (dtDatos.Rows.Count > 0)
+			{
+				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+				{
+					txtDireccionAdquirenteID.Text = dtDatos.Rows[0]["ID"].ToString();
+				}
+				else
+				{
+					throw new ApplicationException("Error al insertar Direccion Adquirente");
+				}
+			}
+
+			#endregion DIRECCION ADQUIRENTE
+
+		}
+		catch (Exception ex) {
+
+			Utilities.utils.Send_Error(ex);
+			Server.Transfer("Error.aspx");
+
+		}
 	}
 
 	protected void btnNuevoPrimera_Click(object sender, EventArgs e)
@@ -634,7 +733,6 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		txtNroValija.Text = "";
 		txtEjecutivo.Text = "";
 		txtSucursal.Text = "";
-
 		#endregion -- DATOSTRAMITA 1 --
 
 		#region -- DATOSTRAMITA 2 --
@@ -677,10 +775,6 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		chkPendienteAnotacionMeraTenencia.Checked = false;
 		chkDespachoExterno.Checked = false;
 		chkInformativoSeguro.Checked = false;
-
-
-
-
 		#endregion -- DATOSTRAMITA 2 --
 
 		#region -- DATOS ADQUIRENTE --
@@ -724,15 +818,12 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		#region -- DATOS DOCUMENTOS_RECIBIDOS --
 		grvDocuemntosRecibidos.DataSource = null;
 		grvDocuemntosRecibidos.DataBind();
-
 		#endregion -- DATOS DOCUMENTOS_RECIBIDOS --
 
 
 		#region -- DESPACHOS --
-
-		grvDespachos.DataSource = null ;
+		grvDespachos.DataSource = null;
 		grvDespachos.DataBind();
-
 		#endregion -- DESPACHOS --
 
 

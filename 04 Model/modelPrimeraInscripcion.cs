@@ -80,6 +80,8 @@ namespace Models
 		public bool chkCI { get; set; }
 		public string DireccionClienteID { get; set; }
 		public string ContactoClienteID { get; set; }
+		public string DireccionAdquirenteID { get; set; }
+
 
 	}
 }
