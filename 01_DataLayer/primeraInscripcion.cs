@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Models;
-
+using Utilities;
 namespace DataLayer
 {
 	static public class primeraInscripcion
@@ -36,33 +36,32 @@ namespace DataLayer
 			DataAccess dAccess = new DataAccess();
 
 			dAccess.Open("tramita_db");
-			SqlParameter[] Param = new SqlParameter[5];
+			SqlParameter[] Param = new SqlParameter[65];
 
-			dAccess.AddParameter(ref pPos, "@PrimeraInscripcionID", modeloPrimeraInscripcion.PrimeraInscripcionID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@EmpresaID", modeloPrimeraInscripcion.EmpresaID, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@PrimeraInscripcionID", modeloPrimeraInscripcion.PrimeraInscripcionID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@PPU", modeloPrimeraInscripcion.PPU, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@NumeroOperacion", modeloPrimeraInscripcion.NumeroOperacion, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@Origen", modeloPrimeraInscripcion.Origen, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@NumeroFactura", modeloPrimeraInscripcion.NumeroFactura, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@RutCliente", modeloPrimeraInscripcion.RutCliente, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@VencimientoContratoLeasing", modeloPrimeraInscripcion.VencimientoContratoLeasing, SqlDbType.DateTime, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@VencimientoContratoLeasing", utils.isNull(modeloPrimeraInscripcion.VencimientoContratoLeasing), SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@NumeroSolicitud", modeloPrimeraInscripcion.NumeroSolicitud, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@EstaEntregado", modeloPrimeraInscripcion.TieneListadoPrimeraInscripcion, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FechaSolicitudRNVM", modeloPrimeraInscripcion.FechaSolicitudRNVM, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@TieneListadoPrimeraInscripcion", modeloPrimeraInscripcion.TieneListadoPrimeraInscripcion, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param); //EstadoEntregado
+			dAccess.AddParameter(ref pPos, "@FechaSolicitudRNVM", utils.isNull(modeloPrimeraInscripcion.FechaSolicitudRNVM), SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@NumeroValija", modeloPrimeraInscripcion.NumeroValija, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@Ejecutivo", modeloPrimeraInscripcion.Ejecutivo, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@Sucursal", modeloPrimeraInscripcion.Sucursal, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FechaRecepcionBanco", modeloPrimeraInscripcion.FechaRecepcionBanco, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FechaPadron", modeloPrimeraInscripcion.FechaPadron, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@FechaRecepcionBanco", utils.isNull(modeloPrimeraInscripcion.FechaRecepcionBanco), SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@FechaPadron", utils.isNull(modeloPrimeraInscripcion.FechaPadron), SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@CodigoDespachoCorreo", modeloPrimeraInscripcion.CodigoDespachoCorreo, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@NumeroPlacas", modeloPrimeraInscripcion.NumeroPlacas, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FechaIngresoRNVM", modeloPrimeraInscripcion.FechaIngresoRNVM, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@FechaIngresoRNVM", utils.isNull(modeloPrimeraInscripcion.FechaIngresoRNVM), SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@Observaciones", modeloPrimeraInscripcion.Observaciones, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@CorrelativoEntrega", modeloPrimeraInscripcion.CorrelativoEntrega, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@Folio", modeloPrimeraInscripcion.Folio, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FechaIngresoTAG", modeloPrimeraInscripcion.FechaIngresoTAG, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@FechaIngresoTAG", utils.isNull(modeloPrimeraInscripcion.FechaIngresoTAG), SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@F88", modeloPrimeraInscripcion.F88, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@ValorF88", modeloPrimeraInscripcion.ValorF88, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@ValorF88", modeloPrimeraInscripcion.ValorF88, SqlDbType.Float, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@FLCertCum5594", modeloPrimeraInscripcion.FLCertCum5594, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@FotocopiaRutBanco", modeloPrimeraInscripcion.FotocopiaRutBanco, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@CertificadoDS5594", modeloPrimeraInscripcion.CertificadoDS5594, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
@@ -82,10 +81,7 @@ namespace DataLayer
 			dAccess.AddParameter(ref pPos, "@PendienteAnotacionMeraTenencia", modeloPrimeraInscripcion.PendienteAnotacionMeraTenencia, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@DespachoExterno", modeloPrimeraInscripcion.DespachoExterno, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@InformativoSeguro", modeloPrimeraInscripcion.InformativoSeguro, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FechaCreacion", modeloPrimeraInscripcion.FechaCreacion, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FechaActualizacion", modeloPrimeraInscripcion.FechaActualizacion, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@VehiculoID", modeloPrimeraInscripcion.VehiculoID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@ComunaID", modeloPrimeraInscripcion.ComunaClienteID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@EstadoID", modeloPrimeraInscripcion.EstadoID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@ObservacionID", modeloPrimeraInscripcion.ObservacionID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@ClienteID", modeloPrimeraInscripcion.ClienteID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
@@ -106,7 +102,6 @@ namespace DataLayer
 			dAccess.AddParameter(ref pPos, "@chkEC", modeloPrimeraInscripcion.chkEC, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@chkCI", modeloPrimeraInscripcion.chkCI, SqlDbType.Bit, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@DireccionClienteID", modeloPrimeraInscripcion.DireccionClienteID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@ContactoClienteID", modeloPrimeraInscripcion.ContactoClienteID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@DireccionAdquirenteID", modeloPrimeraInscripcion.DireccionAdquirenteID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 
 			return dAccess.getData("INS_PrimeraInscripcion", Param).Tables[0];

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer;
+using Models;
 
 namespace BusinessLayer
 {
@@ -15,6 +16,10 @@ namespace BusinessLayer
 			return documentosRecibidos.SEL_DocumentosRecibidos(PrimeraInscripcionID);
 		}
 
+		static public DataTable INS_DocumentoRecibido(DocumentosRecibidosModel objDocumentosRecibidos)
+		{
+			return DataLayer.documentosRecibidos.INS_DocumentoRecibido(objDocumentosRecibidos);
+		}
 
 	}
 }

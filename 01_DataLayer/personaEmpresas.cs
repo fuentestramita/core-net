@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Models;
+using Utilities;
 
 namespace DataLayer
 {
@@ -34,24 +35,24 @@ namespace DataLayer
 
 			dAccess.Open("tramita_db");
 			SqlParameter[] Param = new SqlParameter[12];
-
-			dAccess.AddParameter(ref pPos, "@PersonaEmpresaID", modeloPersonaEmpresa.PersonaEmpresaID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@RUT", modeloPersonaEmpresa.RUT, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@NombreRazonSocial", modeloPersonaEmpresa.NombreRazonSocial, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@ApPaterno", modeloPersonaEmpresa.ApPaterno, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@ApMaterno", modeloPersonaEmpresa.ApMaterno, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@EMail", modeloPersonaEmpresa.EMail, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FonoContacto1", modeloPersonaEmpresa.FonoContacto1, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@FonoContacto2", modeloPersonaEmpresa.FonoContacto2, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@Direccion", modeloPersonaEmpresa.Direccion, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@NroDireccion", modeloPersonaEmpresa.NroDireccion, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@ComplementoDireccion", modeloPersonaEmpresa.ComplementoDireccion, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
-			dAccess.AddParameter(ref pPos, "@ComunaID", modeloPersonaEmpresa.ComunaID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "EmpresaID", modeloPersonaEmpresa.EmpresaID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "UsuarioID", modeloPersonaEmpresa.UsuarioID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "PersonaEmpresaID", utils.isNull(modeloPersonaEmpresa.PersonaEmpresaID), SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "RUT", modeloPersonaEmpresa.RUT, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "NombreRazonSocial", utils.isNull(modeloPersonaEmpresa.NombreRazonSocial), SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "ApPaterno", utils.isNull(modeloPersonaEmpresa.ApPaterno), SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "ApMaterno", utils.isNull(modeloPersonaEmpresa.ApMaterno), SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "EMail", utils.isNull(modeloPersonaEmpresa.EMail), SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "FonoPersona", utils.isNull(modeloPersonaEmpresa.FonoPersona), SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "NombreContacto", utils.isNull(modeloPersonaEmpresa.NombreContacto), SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "FonoContacto", utils.isNull(modeloPersonaEmpresa.FonoContacto), SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "EMailContacto", utils.isNull(modeloPersonaEmpresa.EMailContacto), SqlDbType.VarChar, 50, 0, ParameterDirection.Input, ref Param);
 
 
 			return dAccess.getData("INS_PersonaEmpresa", Param).Tables[0];
 
 		}
+
 
 	}
 }

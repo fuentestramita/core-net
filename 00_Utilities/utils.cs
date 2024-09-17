@@ -2,7 +2,7 @@
 using System.Net.Mail;
 using System.Net;
 using System.Configuration;
-
+using Microsoft.IdentityModel.Tokens;
 
 namespace Utilities
 {
@@ -33,7 +33,7 @@ namespace Utilities
 			System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
 			message.Subject = "Hemos encontrado un error en Core";
-			message.Body = "se ha producido un error en Core en tramita" + ex.StackTrace.Replace("\n", "<br>") + "</b></font><br><br><br>Atte.<br><br>Tramita S.P.A.";
+			message.Body = "se ha producido un error en Core en tramita<br>" + ex.Message.Replace("\n", "<br>") +"<br><br>StackTrace:" + ex.StackTrace.Replace("\n", "<br>") + "</b></font><br><br><br>Atte.<br><br>Tramita S.P.A.";
 
 			client.Send(message);
 
@@ -52,5 +52,23 @@ namespace Utilities
 		{
 
 		}
+
+		static public Object isNull(string valor)
+		{
+			if (valor == null || valor == "")
+				return DBNull.Value;
+			else
+				return valor;
+		}
+
+		static public Object isNull(string valor, Object Retorno)
+		{
+			if (valor == null || valor == "")
+				return Retorno;
+			else
+				return valor;
+		}
+
+
 	}
 }

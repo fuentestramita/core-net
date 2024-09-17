@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models;
+using System;
 using System.Activities;
 using System.Activities.Statements;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using System.Web.UI.WebControls;
 
 public partial class sign_in : System.Web.UI.Page
 {
-	LoginUsuario DatosLogin = new LoginUsuario();
+	LoginModel DatosLogin = new LoginModel();
 	protected void Page_Load(object sender, EventArgs e)
 	{
 
@@ -97,10 +98,5 @@ public partial class sign_in : System.Web.UI.Page
 
 	}
 
-	public class LoginUsuario
-	{
-		public string UsuarioID;
-		public string NombreUsuario;
-		public string EmailUsuario;
-	}
+
 }

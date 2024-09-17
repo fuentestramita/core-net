@@ -2,7 +2,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
 
-	<asp:TextBox ID="txtPrimeraInscripcionID" Visible="false" runat="server"></asp:TextBox>
+	<asp:TextBox ID="txtPrimeraInscripcionID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 
 	<div class="page-inner">
 		<!-- .page-title-bar -->
@@ -130,7 +130,7 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">Nro de Operacion M.T.</label>
-							<asp:TextBox ID="NroOperacionMT" CssClass="form-input-md" placeholder="" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtNroOperacionMT" CssClass="form-input-md" placeholder="" runat="server"></asp:TextBox>
 						</div>
 
 
@@ -151,7 +151,7 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">RUT Cliente</label>
-							<asp:TextBox ID="txtClienteID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtClienteID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRUTCliente" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -165,12 +165,12 @@
 							<asp:TextBox ID="txtNombreRazonSocialCliente" CssClass="form-input-xl flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 						</div>
 						<div class="form-group">
-							<label class="form-label-lg" for="select2-data-remote">Calle</label>
+							<label class="form-label-lg" for="select2-data-remote">Dirección Cliente</label>
 							<label class="form-label-sm" for="select2-data-remote" style="margin-left: 25px">Número</label>
 							<label class="form-label-md" for="select2-data-remote" style="margin-left: 47px">Complemento</label>
 						</div>
 						<div class="form-group">
-							<asp:TextBox ID="txtDireccionClienteID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtDireccionClienteID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtDireccionCliente" CssClass="form-input-lg flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtNumeroDireccionCliente" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtComplementoDireccionCliente" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
@@ -189,7 +189,7 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">Rut Representante Legal</label>
-							<asp:TextBox ID="txtRepresentanteLegalID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtRepresentanteLegalID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRUTRepresentanteLegal" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -204,7 +204,6 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">Contacto</label>
-							<asp:TextBox ID="ContactoClienteID" Visible="false" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtContacto" CssClass="form-input-xl flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 						</div>
 						<div class="form-group">
@@ -258,7 +257,7 @@
 				</section>
 
 				<!-- /.card -->
-				<!-- .card -->
+				<!-- .Datos Tramita -->
 				<section class="card card-fluid">
 					<!-- .card-body -->
 					<div class="card-body">
@@ -455,12 +454,12 @@
 					</div>
 					<!-- /.card-body -->
 				</section>
-				<!-- /.card -->
+				<!-- /.Datos Tramita -->
 			</div>
 			<!-- /.section-deck -->
 			<!-- .section-deck -->
 			<div class="section-deck">
-				<!-- .card -->
+				<!-- .Datos Vehiculo -->
 				<section class="card card-fluid">
 					<!-- .card-body -->
 					<div class="card-body">
@@ -468,6 +467,7 @@
 						<h6 class="card-subtitle mb-4"></h6>
 						<!-- form -->
 						<div class="form-group">
+							<asp:TextBox ID="txtVehiculoID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 							<label class="form-label-lg" for="select2-data-remote">Tipo Vehículo</label>
 							<asp:DropDownList ID="ddlTipoVehiculo" CssClass="form-input-lg" runat="server">
 							</asp:DropDownList>
@@ -558,8 +558,8 @@
 					</div>
 					<!-- /.card-body -->
 				</section>
-				<!-- /.card -->
-				<!-- .card -->
+				<!-- /.Datos Vehiculo -->
+				<!-- .Datos del Vehículo -->
 				<section class="card card-fluid">
 					<!-- .card-body -->
 					<div class="card-body">
@@ -622,7 +622,7 @@
 					</div>
 					<!-- /.card-body -->
 				</section>
-				<!-- /.card -->
+				<!-- /.Datos del Vehículo -->
 			</div>
 			<!-- /.section-deck -->
 			<div class="section-deck">
@@ -634,7 +634,7 @@
 						<!-- form -->
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">RUT</label>
-							<asp:TextBox ID="txtAdquirenteID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtAdquirenteID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRutAdquirente" CssClass="form-input-lg flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -646,12 +646,12 @@
 							<asp:TextBox ID="txtNombreRazonSocialAdquirente" CssClass="form-input-xxl" placeholder="" runat="server"></asp:TextBox>
 						</div>
 						<div class="form-group">
-							<label class="form-label-lg" for="select2-data-remote">Calle</label>
+							<label class="form-label-lg" for="select2-data-remote">Dirección Adquirente</label>
 							<label class="form-label-sm" for="select2-data-remote" style="margin-left: 25px">Número</label>
 							<label class="form-label-md" for="select2-data-remote" style="margin-left: 47px">Complemento</label>
 						</div>
 						<div class="form-group">
-							<asp:TextBox ID="txtDireccionAdquirenteID" Visible="false" runat="server"></asp:TextBox>
+							<asp:TextBox ID="txtDireccionAdquirenteID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtDireccionAdquirente" CssClass="form-input-lg flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtNumeroDireccionAdquirente" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<asp:TextBox ID="txtComplementoDireccionAdquirente" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
@@ -691,6 +691,7 @@
 							<asp:GridView ID="grvDocuemntosRecibidos" CssClass="table-responsive table table-hover table-striped" HeaderStyle-CssClass="thead-dark" UseAccessibleHeader="true" GridLines="None" AutoGenerateColumns="False" runat="server">
 
 								<Columns>
+									<asp:BoundField DataField="documentoRecibidoID" HeaderText="documentoRecibidoID" Visible="false" />
 									<asp:BoundField DataField="tipoDocumento" HeaderText="Tipo Documento" />
 									<asp:BoundField DataField="nroDocumentoCausa" HeaderText="Nro.Documento" />
 									<asp:BoundField DataField="rutEmisorDocumento" HeaderText="RUT Emisor" />
@@ -714,7 +715,7 @@
 							<div id="DoctosRecibidosHeader" style="display: none;">
 								<h4 class="card-title">Nuevo</h4>
 								<h6 class="card-subtitle mb-4"></h6>
-								<asp:TextBox ID="txtIDDocumentoRecibido" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
+								<asp:TextBox ID="txtDocumentoRecibidoID" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
 								<div class="form-group">
 									<label class="form-label-lg" for="select2-data-remote">Tipo Documento</label>
 									<asp:DropDownList ID="ddlTipoDocumento" DataValueField="ID" DataTextField="tipoDocumento" CssClass="form-input-lg" runat="server">
@@ -730,7 +731,7 @@
 								</div>
 								<div class="form-group">
 									<label class="form-label-lg" for="select2-data-remote">RUT Documento</label>
-									<asp:TextBox ID="ProveedorID" Visible="false" runat="server"></asp:TextBox>
+									<asp:TextBox ID="txtEmisorDocumentoID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 									<asp:TextBox ID="txtRutDocumento" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
 									<button class="btn-xs btn-primary">
 										<span class="oi oi-magnifying-glass mr-1"></span>
@@ -739,7 +740,7 @@
 								</div>
 								<div class="form-group">
 									<label class="form-label-lg" for="select2-data-remote">Razón Social Proveedor</label>
-									<asp:TextBox ID="txtRazonSocialProveedor" CssClass="form-input-xl" placeholder="" runat="server"></asp:TextBox>
+									<asp:TextBox ID="txtRazonSocialEmisorDocumento" CssClass="form-input-xl" placeholder="" runat="server"></asp:TextBox>
 								</div>
 								<div class="form-group">
 									<label class="form-label-lg" for="select2-data-remote">Valor Neto Factura</label>

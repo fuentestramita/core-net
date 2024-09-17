@@ -13,29 +13,29 @@ namespace Models
 		public string mensaje { get; set; }
 		public string PrimeraInscripcionID { get; set; }
 		public string EmpresaID { get; set; }
-		public string PPU { get; set; }
-		public string NumeroOperacion { get; set; }
-		public string Origen { get; set; }
-		public string NumeroFactura { get; set; }
-		public string RutCliente { get; set; }
+		public string PPU { get; set; } = "";
+		public string NumeroOperacion { get; set; } = "";
+		public string Origen { get; set; } = "";
+		public string NumeroFactura { get; set; } = "";
+		public string RutCliente { get; set; } = "";
 		public string VencimientoContratoLeasing { get; set; }
-		public string NumeroSolicitud { get; set; }
+		public string NumeroSolicitud { get; set; } = "";
 		public bool TieneListadoPrimeraInscripcion { get; set; }
 		public string FechaSolicitudRNVM { get; set; }
-		public string NumeroValija { get; set; }
-		public string Ejecutivo { get; set; }
-		public string Sucursal { get; set; }
+		public string NumeroValija { get; set; } = "";
+		public string Ejecutivo { get; set; } = "";
+		public string Sucursal { get; set; } = "";
 		public string FechaRecepcionBanco { get; set; }
 		public string FechaPadron { get; set; }
-		public string CodigoDespachoCorreo { get; set; }
+		public string CodigoDespachoCorreo { get; set; } = "";
 		public string NumeroPlacas { get; set; }
 		public string FechaIngresoRNVM { get; set; }
-		public string Observaciones { get; set; }
-		public string CorrelativoEntrega { get; set; }
-		public string Folio { get; set; }
+		public string Observaciones { get; set; } = "";
+		public string CorrelativoEntrega { get; set; } = "";
+		public string Folio { get; set; } = "";
 		public string FechaIngresoTAG { get; set; }
 		public bool F88 { get; set; }
-		public string ValorF88 { get; set; }
+		public string ValorF88 { get; set; } = "";
 		public bool FLCertCum5594 { get; set; }
 		public bool FotocopiaRutBanco { get; set; }
 		public bool CertificadoDS5594 { get; set; }
@@ -70,8 +70,8 @@ namespace Models
 		public string ValorNotariaID { get; set; }
 		public string ValorDespachoCorreoID { get; set; }
 		public string OficinaID { get; set; }
-		public string AnoProceso { get; set; }
-		public string AnoFiltro { get; set; }
+		public string AnoProceso { get; set; } = "";
+		public string AnoFiltro { get; set; } = "";
 		public bool chkTag { get; set; }
 		public bool chkPlacas { get; set; }
 		public string RepresentanteLegalID { get; set; }
@@ -79,7 +79,6 @@ namespace Models
 		public bool chkEC { get; set; }
 		public bool chkCI { get; set; }
 		public string DireccionClienteID { get; set; }
-		public string ContactoClienteID { get; set; }
 		public string DireccionAdquirenteID { get; set; }
 
 

@@ -8,15 +8,18 @@ using BusinessLayer;
 using System.Data;
 using static System.Net.Mime.MediaTypeNames;
 using System.Configuration;
-using DataLayer;
 using Models;
 using System.Diagnostics.Contracts;
+using DataLayer;
 
 public partial class primera_inscripcion : System.Web.UI.Page
 {
 	string EmpresaID = "";
 	HttpCookie userInfo = new HttpCookie("CoreInfo");
 	int UserID = 0;
+
+	LoginModel DatosLogin = new LoginModel();
+
 
 	protected void Page_Load(object sender, EventArgs e)
 	{
@@ -25,12 +28,19 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		DropDownList cmbEmpresas = master.FindControl("cmbEmpresas") as DropDownList;
 		EmpresaID = cmbEmpresas.SelectedValue;
 
+
+		// Aqui rescato datps de la Cookie
+		#region ----- Cookie -----
 		userInfo = Request.Cookies["CoreInfo"];
 		if (userInfo != null)
 		{
 			UserID = int.Parse(Utilities.cipher.DecryptString(userInfo["model"].ToString()));
 
+			DatosLogin.UsuarioID = UserID.ToString();
+			DatosLogin.NombreUsuario = userInfo["Name"].ToString();
+			DatosLogin.EmailUsuario = userInfo["Email"].ToString();
 		}
+		#endregion ----- Cookie -----
 
 
 
@@ -43,46 +53,38 @@ public partial class primera_inscripcion : System.Web.UI.Page
 
 	protected void btnBuscar_Click(object sender, EventArgs e)
 	{
+		#region ----- DECLARACIONES  -----
+		PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
+		PrimeraInscripcionModel objprimeraInscripcion = new PrimeraInscripcionModel();
+		DireccionModel objDireccion = new DireccionModel();
+		DataTable dtDatos;
+		DataTable dtPersonaEmpresa;
+		DataTable dtDireccionPersona;
+		#endregion ----- END DECLARACIONES -----
+
 		string PrimeraInscripcionID = "";
 		if (!(txtPPUBuscar.Text == "" && txtNroFactura.Text == "" && txtRUTFacturaBuscar.Text == ""))
 		{
-			DataTable dtDatos = PrimeraInscripcion.SEL_PrimeraInscripcion(EmpresaID, (txtPrimeraInscripcionID.Text == "" ? "0" : txtPrimeraInscripcionID.Text), txtPPUBuscar.Text, txtNroFacturaBuscar.Text, txtRUTFacturaBuscar.Text);
+			dtDatos = PrimeraInscripcion.SEL_PrimeraInscripcion(EmpresaID, (txtPrimeraInscripcionID.Text == "" ? "0" : txtPrimeraInscripcionID.Text), txtPPUBuscar.Text, txtNroFacturaBuscar.Text, txtRUTFacturaBuscar.Text);
 
 			if (dtDatos.Rows.Count > 0)
 			{
 				#region -- DATOSTRAMITA 1 --
-
 				string VehiculoID = "0";
-
-
 				PrimeraInscripcionID = dtDatos.Rows[0]["PrimeraInscripcionID"].ToString();
+				txtPrimeraInscripcionID.Text = PrimeraInscripcionID;
 				txtPPU.Text = dtDatos.Rows[0]["PPU"].ToString();
 				//				txtDVPPU.Text = dtDatos.Rows[0]["DVPPU"].ToString();
 				ddlEstado.SelectedValue = dtDatos.Rows[0]["EstadoID"].ToString();
 				txtNroOperacion.Text = dtDatos.Rows[0]["NumeroOperacion"].ToString();
+				txtNroOperacionMT.Text = "PENDIENTE";
 				txtOrigen.Text = dtDatos.Rows[0]["Origen"].ToString();
 				//txtCodigoCIT.Text= dtDatos.Rows[0]["CodigoCIT"].ToString();
 				txtNroFactura.Text = dtDatos.Rows[0]["NumeroFactura"].ToString();
 				txtVencimientoContratoLeasing.Text = dtDatos.Rows[0]["vencimientoContratoLeasing"].ToString();
 
-				txtRUTCliente.Text = dtDatos.Rows[0]["RutCliente"].ToString();
-				txtNombreRazonSocialCliente.Text = dtDatos.Rows[0]["nombreRazonSocialCliente"].ToString();
-				txtDireccionCliente.Text = dtDatos.Rows[0]["DireccionCliente"].ToString();
-				txtNumeroDireccionCliente.Text = dtDatos.Rows[0]["NroDireccionCliente"].ToString();
-				txtComplementoDireccionCliente.Text = dtDatos.Rows[0]["ComplementoDireccionCliente"].ToString();
-				ddlComunaCliente.SelectedValue = dtDatos.Rows[0]["ComunaIDRepresentanteLegal"].ToString();
-				ddlCiudadCliente.SelectedValue = dtDatos.Rows[0]["CiudadIDRepresentanteLegal"].ToString();
-
-
-
-				// Datos representante legal
-				txtRUTRepresentanteLegal.Text = dtDatos.Rows[0]["rutRepresentanteLegal"].ToString();
-				txtNombreRepresentanteLegal.Text = dtDatos.Rows[0]["nombreRazonSocialRepresentanteLegal"].ToString();
-
-
-				txtContacto.Text = dtDatos.Rows[0]["Contacto"].ToString();
-				txtTelefonoContacto.Text = dtDatos.Rows[0]["TelefonoContacto"].ToString();
-				txtEmailContacto.Text = dtDatos.Rows[0]["EmailContacto"].ToString();
+				txtClienteID.Text = dtDatos.Rows[0]["ClienteID"].ToString();
+				txtRepresentanteLegalID.Text = dtDatos.Rows[0]["RepresentanteLegalID"].ToString();
 				txtNroSolicitud.Text = dtDatos.Rows[0]["numeroSolicitud"].ToString();
 				ddlOficinas.SelectedValue = dtDatos.Rows[0]["OficinaID"].ToString();
 				txtFechaSolicitudRNVM.Text = dtDatos.Rows[0]["fechaSolicitudRnvm"].ToString();
@@ -92,6 +94,53 @@ public partial class primera_inscripcion : System.Web.UI.Page
 				txtNroValija.Text = dtDatos.Rows[0]["NumeroValija"].ToString();
 				txtEjecutivo.Text = dtDatos.Rows[0]["Ejecutivo"].ToString();
 				txtSucursal.Text = dtDatos.Rows[0]["sucursal"].ToString();
+				txtDireccionAdquirenteID.Text = dtDatos.Rows[0]["DireccionAdquirenteID"].ToString();
+				txtDireccionClienteID.Text = dtDatos.Rows[0]["DireccionClienteID"].ToString();
+
+
+
+				// Datos Cliente
+				dtPersonaEmpresa = PersonaEmpresas.SEL_PersonasEmpresas(txtClienteID.Text, "");
+				if (dtPersonaEmpresa.Rows.Count > 0)
+				{
+					txtRUTCliente.Text = dtPersonaEmpresa.Rows[0]["Rut"].ToString();
+					txtNombreRazonSocialCliente.Text = dtPersonaEmpresa.Rows[0]["nombreRazonSocial"].ToString();
+					txtContacto.Text = dtPersonaEmpresa.Rows[0]["nombreContacto"].ToString();
+					txtTelefonoContacto.Text = dtPersonaEmpresa.Rows[0]["fonoContacto"].ToString();
+					txtEmailContacto.Text = dtPersonaEmpresa.Rows[0]["eMailContacto"].ToString();
+				}
+
+				// Direccion Cliente
+				dtDireccionPersona = Direcciones.SEL_Direccion(txtDireccionClienteID.Text, "0");
+				if (dtDireccionPersona.Rows.Count > 0)
+				{
+					txtDireccionCliente.Text = dtDireccionPersona.Rows[0]["Direccion"].ToString();
+					txtNumeroDireccionCliente.Text = dtDireccionPersona.Rows[0]["NumeroDireccion"].ToString();
+					txtComplementoDireccionCliente.Text = dtDireccionPersona.Rows[0]["ComplementoDireccion"].ToString();
+					ddlComunaCliente.SelectedValue = dtDireccionPersona.Rows[0]["ComunaID"].ToString();
+					ddlCiudadCliente.SelectedValue = dtDireccionPersona.Rows[0]["CiudadID"].ToString();
+
+					if (txtContacto.Text != "")
+					{
+						txtContacto.Text = dtPersonaEmpresa.Rows[0]["NombreContacto"].ToString();
+						txtTelefonoContacto.Text = dtPersonaEmpresa.Rows[0]["FonoContacto"].ToString();
+						txtEmailContacto.Text = dtPersonaEmpresa.Rows[0]["EmailContacto"].ToString();
+					}
+
+				}
+
+
+				// Datos representante legal
+				dtPersonaEmpresa = PersonaEmpresas.SEL_PersonasEmpresas(txtClienteID.Text, "");
+				if (dtPersonaEmpresa.Rows.Count > 0)
+				{
+					txtRUTRepresentanteLegal.Text = dtPersonaEmpresa.Rows[0]["RUT"].ToString();
+					txtNombreRepresentanteLegal.Text = dtPersonaEmpresa.Rows[0]["NombreRazonSocial"].ToString();
+				}
+
+
+
+
 
 				#endregion -- DATOSTRAMITA 1 --
 
@@ -144,13 +193,23 @@ public partial class primera_inscripcion : System.Web.UI.Page
 
 				#region -- DATOS ADQUIRENTE --
 				// Datos Adquiernte
-				txtRutAdquirente.Text = dtDatos.Rows[0]["RutAdquirente"].ToString();
-				txtNombreRazonSocialAdquirente.Text = dtDatos.Rows[0]["nombreRazonSocialAdquirente"].ToString();
-				txtDireccionAdquirente.Text = dtDatos.Rows[0]["DireccionAdquirente"].ToString();
-				txtNumeroDireccionAdquirente.Text = dtDatos.Rows[0]["NroDireccionAdquirente"].ToString();
-				txtComplementoDireccionAdquirente.Text = dtDatos.Rows[0]["ComplementoDireccionAdquirente"].ToString();
-				ddlComunaAdquirente.SelectedValue = dtDatos.Rows[0]["ComunaIDAdquirente"].ToString();
-				ddlCiudadAdquirente.SelectedValue = dtDatos.Rows[0]["CiudadIDAdquirente"].ToString();
+				txtAdquirenteID.Text = dtDatos.Rows[0]["AdquirenteID"].ToString();
+				dtPersonaEmpresa = PersonaEmpresas.SEL_PersonasEmpresas(txtAdquirenteID.Text, "");
+				if (dtPersonaEmpresa.Rows.Count > 0)
+				{
+					txtRutAdquirente.Text = dtPersonaEmpresa.Rows[0]["Rut"].ToString();
+					txtNombreRazonSocialAdquirente.Text = dtPersonaEmpresa.Rows[0]["nombreRazonSocial"].ToString();
+				}
+
+				dtDireccionPersona = Direcciones.SEL_Direccion(txtDireccionAdquirenteID.Text, "0");
+				if (dtDireccionPersona.Rows.Count > 0)
+				{
+					txtDireccionAdquirente.Text = dtDireccionPersona.Rows[0]["Direccion"].ToString();
+					txtNumeroDireccionAdquirente.Text = dtDireccionPersona.Rows[0]["NumeroDireccion"].ToString();
+					txtComplementoDireccionAdquirente.Text = dtDireccionPersona.Rows[0]["ComplementoDireccion"].ToString();
+					ddlComunaAdquirente.SelectedValue = dtDireccionPersona.Rows[0]["ComunaID"].ToString();
+					ddlCiudadAdquirente.SelectedValue = dtDireccionPersona.Rows[0]["CiudadID"].ToString();
+				}
 				#endregion -- DATOS ADQUIRENTE --
 
 
@@ -160,6 +219,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 					DataTable dtDatosVehiculo = Vehiculos.SEL_VEHICULOS(VehiculoID);
 					if (dtDatosVehiculo.Rows.Count > 0)
 					{
+						txtVehiculoID.Text = dtDatosVehiculo.Rows[0]["vehiculoId"].ToString();
 						ddlTipoVehiculo.SelectedValue = dtDatosVehiculo.Rows[0]["tipoVehiculoId"].ToString();
 						ddlMarca.SelectedValue = dtDatosVehiculo.Rows[0]["MarcaId"].ToString();
 						ddlModelo.SelectedValue = dtDatosVehiculo.Rows[0]["ModeloId"].ToString();
@@ -430,6 +490,77 @@ public partial class primera_inscripcion : System.Web.UI.Page
 
 	protected void btnGrabarDoctosRecibidos_OnClick(object sender, EventArgs e)
 	{
+		#region ----- DECLARACIONES  -----
+		DocumentosRecibidosModel objDocumentosRecibidos = new DocumentosRecibidosModel();
+		PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
+		DataTable dtDatos;
+		#endregion ----- END DECLARACIONES -----
+
+		//TODO: probar insercion de docmuentos y personas, emisor documento con rut carol
+
+		#region		EMISOR DOCUMENTO
+		objPersona.EmpresaID = EmpresaID;
+		objPersona.UsuarioID = DatosLogin.UsuarioID;
+		objPersona.PersonaEmpresaID = txtEmisorDocumentoID.Text;
+		objPersona.RUT = txtRutDocumento.Text.ToUpper();
+		objPersona.NombreRazonSocial = txtRazonSocialEmisorDocumento.Text.ToUpper();
+		objPersona.FonoPersona = "";
+		objPersona.EMail = "";
+		objPersona.NombreContacto = "";
+		objPersona.FonoContacto = "";
+		objPersona.EMailContacto = "";
+
+		dtDatos = PersonaEmpresas.INS_PersonaEmpresa(objPersona);
+		if (dtDatos.Rows.Count > 0)
+		{
+			if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+			{
+				txtEmisorDocumentoID.Text = dtDatos.Rows[0]["ID"].ToString();
+			}
+			else
+			{
+				throw new Exception("Error al insertar Emisor Documento " +dtDatos.Rows[0]["errorDescription"].ToString());
+			}
+		}
+
+
+		#endregion EMISOR DOCUMENTO
+
+
+		objDocumentosRecibidos.EmpresaID = EmpresaID;
+		objDocumentosRecibidos.UsuarioID = DatosLogin.UsuarioID;
+		objDocumentosRecibidos.DocumentoRecibidoID = txtDocumentoRecibidoID.Text;
+		objDocumentosRecibidos.PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
+		objDocumentosRecibidos.TipoDocumentoID = ddlTipoDocumento.SelectedValue;
+		objDocumentosRecibidos.NaturalezaAdquisicion = txtNaturalezaAdquisición.Text;
+		objDocumentosRecibidos.NumeroDocumentoCausa = txtNroDocumentoCausa.Text;
+		objDocumentosRecibidos.ValorNeto = txtValorNetoFactura.Text;
+		objDocumentosRecibidos.ValorIVAFactura = txtValorIvaFactura.Text;
+		objDocumentosRecibidos.ValorTotalFactura = txtValorTotalFactura.Text;
+		objDocumentosRecibidos.LugarDocumento = txtLugarDocumento.Text;
+		objDocumentosRecibidos.FechaDocumento = txtFechaDocumento.Text;
+		objDocumentosRecibidos.NombreAutorizanteEmisor = txtNombreAutorizante.Text;
+		objDocumentosRecibidos.AcreedorBeneficiarioDemandante = txtAcreedorBeneficiarioDemandante.Text;
+		objDocumentosRecibidos.PDF = txtPDFDocumento.Text;
+		objDocumentosRecibidos.EmisorDocumentoID = txtEmisorDocumentoID.Text;
+
+
+		dtDatos = documentosRecibidos.INS_DocumentoRecibido(objDocumentosRecibidos);
+		if (dtDatos.Rows.Count > 0)
+		{
+			if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+			{
+				txtDocumentoRecibidoID.Text = dtDatos.Rows[0]["ID"].ToString();
+			}
+			else
+			{
+				throw new Exception(dtDatos.Rows[0]["errorDescription"].ToString());
+			}
+		}
+
+
+
+
 
 	}
 
@@ -451,21 +582,21 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
 			PrimeraInscripcionModel objprimeraInscripcion = new PrimeraInscripcionModel();
 			DireccionModel objDireccion = new DireccionModel();
-			ContactoModel objContacto = new ContactoModel();
 			DataTable dtDatos;
 			#endregion ----- END DECLARACIONES -----
 
 
 			#region ---- CLIENTE ----
+			objPersona.EmpresaID = EmpresaID;
+			objPersona.UsuarioID = DatosLogin.UsuarioID;
 			objPersona.PersonaEmpresaID = txtClienteID.Text;
-			objPersona.RUT = txtRUTCliente.Text;
-			objPersona.NombreRazonSocial = txtNombreRazonSocialCliente.Text;
-			objPersona.FonoContacto1 = txtTelefonoContacto.Text;
-			objPersona.EMail = txtEmailContacto.Text;
-			objPersona.Direccion = txtDireccionCliente.Text;
-			objPersona.NroDireccion = txtNumeroDireccionCliente.Text;
-			objPersona.ComplementoDireccion = txtComplementoDireccionCliente.Text;
-			objPersona.ComunaID = ddlComunaCliente.SelectedValue;
+			objPersona.RUT = txtRUTCliente.Text.ToUpper();
+			objPersona.NombreRazonSocial = txtNombreRazonSocialCliente.Text.ToUpper();
+			objPersona.EMail = "";
+
+			objPersona.NombreContacto = txtContacto.Text.ToUpper();
+			objPersona.FonoContacto = txtTelefonoContacto.Text.ToUpper();
+			objPersona.EMailContacto = txtEmailContacto.Text.ToUpper();
 
 
 			dtDatos = PersonaEmpresas.INS_PersonaEmpresa(objPersona);
@@ -477,25 +608,25 @@ public partial class primera_inscripcion : System.Web.UI.Page
 				}
 				else
 				{
-					throw new ApplicationException("Error al insertar Cliente");
+					throw new Exception("Error al insertar Cliente " + dtDatos.Rows[0]["errorDescription"].ToString());
 				}
-			}
+ 			}
 
 
 			#endregion ---- END CLIENTE ----
 
 
 			#region REPRESENTANTE LEGAL
+			objPersona.EmpresaID = EmpresaID;
+			objPersona.UsuarioID = DatosLogin.UsuarioID;
 			objPersona.PersonaEmpresaID = txtRepresentanteLegalID.Text;
-			objPersona.RUT = txtRUTRepresentanteLegal.Text;
-			objPersona.NombreRazonSocial = txtNombreRepresentanteLegal.Text;
-			objPersona.FonoContacto1 = "";
-			objPersona.FonoContacto2 = "";
+			objPersona.RUT = txtRUTRepresentanteLegal.Text.ToUpper();
+			objPersona.NombreRazonSocial = txtNombreRepresentanteLegal.Text.ToUpper();
+			objPersona.FonoPersona = "";
 			objPersona.EMail = "";
-			objPersona.Direccion = "";
-			objPersona.NroDireccion = "";
-			objPersona.ComplementoDireccion = "";
-			objPersona.ComunaID = "0";
+			objPersona.NombreContacto = "";
+			objPersona.FonoContacto = "";
+			objPersona.EMailContacto = "";
 
 			dtDatos = PersonaEmpresas.INS_PersonaEmpresa(objPersona);
 			if (dtDatos.Rows.Count > 0)
@@ -506,7 +637,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 				}
 				else
 				{
-					throw new ApplicationException("Error al insertar Representante Legal");
+					throw new Exception("Error al insertar Representante Legal "+ dtDatos.Rows[0]["errorDescription"].ToString());
 				}
 			}
 
@@ -514,16 +645,16 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			#endregion REPRESENTANTE LEGAL
 
 			#region ADQUIRENTE
+			objPersona.EmpresaID = EmpresaID;
+			objPersona.UsuarioID = DatosLogin.UsuarioID;
 			objPersona.PersonaEmpresaID = txtAdquirenteID.Text;
-			objPersona.RUT = txtRutAdquirente.Text;
-			objPersona.NombreRazonSocial = txtNombreRazonSocialAdquirente.Text;
-			objPersona.Direccion = txtDireccionAdquirente.Text;
-			objPersona.NroDireccion = txtNumeroDireccionAdquirente.Text;
-			objPersona.ComplementoDireccion = txtComplementoDireccionAdquirente.Text;
-			objPersona.ComunaID = ddlComunaAdquirente.SelectedValue;
-			objPersona.FonoContacto1 = "";
-			objPersona.FonoContacto2 = "";
+			objPersona.RUT = txtRutAdquirente.Text.ToUpper();
+			objPersona.NombreRazonSocial = txtNombreRazonSocialAdquirente.Text.ToUpper();
+			objPersona.FonoPersona = "";
 			objPersona.EMail = "";
+			objPersona.NombreContacto = "";
+			objPersona.FonoContacto = "";
+			objPersona.EMailContacto = "";
 
 			dtDatos = PersonaEmpresas.INS_PersonaEmpresa(objPersona);
 			if (dtDatos.Rows.Count > 0)
@@ -534,11 +665,69 @@ public partial class primera_inscripcion : System.Web.UI.Page
 				}
 				else
 				{
-					throw new ApplicationException("Error al insertar Adquirente");
+					throw new Exception("Error al insertar Adquirente " + dtDatos.Rows[0]["errorDescription"].ToString());
 				}
 			}
 			#endregion ADQUIRENTE
 
+
+			#region DIRECCION CLIENTE
+
+			//Aqui grabar Direccion Cliente			DireccionClienteID
+			objDireccion.EmpresaID = EmpresaID;
+			objDireccion.UsuarioID = DatosLogin.UsuarioID;
+			objDireccion.PersonaEmpresaID = txtClienteID.Text;
+			objDireccion.DireccionID = txtDireccionClienteID.Text.ToUpper();
+			objDireccion.Direccion = txtDireccionCliente.Text.ToUpper();
+			objDireccion.NumeroDireccion = txtNumeroDireccionCliente.Text.ToUpper();
+			objDireccion.ComplementoDireccion = txtComplementoDireccionCliente.Text.ToUpper();
+			objDireccion.ComunaID = ddlComunaCliente.SelectedValue;
+
+			dtDatos = Direcciones.INS_Direccion(objDireccion);
+			if (dtDatos.Rows.Count > 0)
+			{
+				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+				{
+					txtDireccionClienteID.Text = dtDatos.Rows[0]["ID"].ToString();
+				}
+				else
+				{
+					throw new ApplicationException("Error al insertar Direccion Cliente " + dtDatos.Rows[0]["errorDescription"].ToString());
+				}
+			}
+
+
+			#endregion DIRECCION CLIENTE
+
+
+
+			#region DIRECCION ADQUIRENTE
+			//Aqui grabar Direccion Adquirente   DireccionAdquirenteID
+
+			objDireccion.EmpresaID = EmpresaID;
+			objDireccion.UsuarioID = DatosLogin.UsuarioID;
+			objDireccion.PersonaEmpresaID = txtAdquirenteID.Text;
+			objDireccion.DireccionID = txtDireccionAdquirenteID.Text;
+			objDireccion.Direccion = txtDireccionAdquirente.Text.ToUpper();
+			objDireccion.NumeroDireccion = txtNumeroDireccionAdquirente.Text.ToUpper();
+			objDireccion.ComplementoDireccion = txtComplementoDireccionAdquirente.Text.ToUpper();
+			objDireccion.ComunaID = ddlComunaAdquirente.SelectedValue;
+
+
+			dtDatos = Direcciones.INS_Direccion(objDireccion);
+			if (dtDatos.Rows.Count > 0)
+			{
+				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+				{
+					txtDireccionAdquirenteID.Text = dtDatos.Rows[0]["ID"].ToString();
+				}
+				else
+				{
+					throw new ApplicationException("Error al insertar Direccion Adquirente");
+				}
+			}
+
+			#endregion DIRECCION ADQUIRENTE
 
 
 			#region PRIMERA INSCRIPCION
@@ -546,25 +735,25 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			objprimeraInscripcion.PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
 			objprimeraInscripcion.EmpresaID = EmpresaID;
 			objprimeraInscripcion.PPU = txtPPU.Text;
-			objprimeraInscripcion.NumeroOperacion = txtNroOperacion.Text;
-			objprimeraInscripcion.Origen = txtOrigen.Text;
-			objprimeraInscripcion.NumeroFactura = txtNroFactura.Text;
-			objprimeraInscripcion.RutCliente = txtRUTCliente.Text;
+			objprimeraInscripcion.NumeroOperacion = txtNroOperacion.Text.ToUpper();
+			objprimeraInscripcion.Origen = txtOrigen.Text.ToUpper();
+			objprimeraInscripcion.NumeroFactura = txtNroFactura.Text.ToUpper();
+			objprimeraInscripcion.RutCliente = txtRUTCliente.Text.ToUpper();
 			objprimeraInscripcion.VencimientoContratoLeasing = txtVencimientoContratoLeasing.Text;
-			objprimeraInscripcion.NumeroSolicitud = txtNroSolicitud.Text;
+			objprimeraInscripcion.NumeroSolicitud = txtNroSolicitud.Text.ToUpper();
 			objprimeraInscripcion.TieneListadoPrimeraInscripcion = chkTieneListadoPrimeraInscripcion.Checked;
 			objprimeraInscripcion.FechaSolicitudRNVM = txtFechaSolicitudRNVM.Text;
-			objprimeraInscripcion.NumeroValija = txtNroValija.Text;
-			objprimeraInscripcion.Ejecutivo = txtEjecutivo.Text;
-			objprimeraInscripcion.Sucursal = txtSucursal.Text;
+			objprimeraInscripcion.NumeroValija = txtNroValija.Text.ToUpper();
+			objprimeraInscripcion.Ejecutivo = txtEjecutivo.Text.ToUpper();
+			objprimeraInscripcion.Sucursal = txtSucursal.Text.ToUpper();
 			objprimeraInscripcion.FechaRecepcionBanco = txtFechaRecepcionBanco.Text;
 			objprimeraInscripcion.FechaPadron = txtFechaPadron.Text;
-			objprimeraInscripcion.CodigoDespachoCorreo = txtCodigoDespachoCorreo.Text;
+			objprimeraInscripcion.CodigoDespachoCorreo = txtCodigoDespachoCorreo.Text.ToUpper();
 			objprimeraInscripcion.NumeroPlacas = ddlNroPlacas.SelectedValue;
 			objprimeraInscripcion.FechaIngresoRNVM = txtFechaIngresoRNVM.Text;
-			objprimeraInscripcion.Observaciones = txtObservaciones.Text;
-			objprimeraInscripcion.CorrelativoEntrega = txtCorrelativoEntrega.Text;
-			objprimeraInscripcion.Folio = txtFolio.Text;
+			objprimeraInscripcion.Observaciones = txtObservaciones.Text.ToUpper();
+			objprimeraInscripcion.CorrelativoEntrega = txtCorrelativoEntrega.Text.ToUpper();
+			objprimeraInscripcion.Folio = txtFolio.Text.ToUpper();
 			objprimeraInscripcion.FechaIngresoTAG = txtFechaIngresoTAG.Text;
 			objprimeraInscripcion.F88 = chkF88.Checked;
 			objprimeraInscripcion.ValorF88 = txtValorF88.Text;
@@ -586,8 +775,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			objprimeraInscripcion.PendienteAnotacionMeraTenencia = chkPendienteAnotacionMeraTenencia.Checked;
 			objprimeraInscripcion.DespachoExterno = chkDespachoExterno.Checked;
 			objprimeraInscripcion.InformativoSeguro = chkInformativoSeguro.Checked;
-			objprimeraInscripcion.VehiculoID =
-			objprimeraInscripcion.ComunaClienteID = ddlComunaCliente.SelectedValue;
+			objprimeraInscripcion.VehiculoID = txtVehiculoID.Text;
 			objprimeraInscripcion.EstadoID = ddlEstado.SelectedValue;
 			objprimeraInscripcion.ObservacionID = ddlObservacionEntrega.SelectedValue;
 			objprimeraInscripcion.UsuarioID = UserID.ToString();
@@ -598,6 +786,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			objprimeraInscripcion.ValorDespachoCorreoID = ddlValorDespachoCorreo.SelectedValue;
 			objprimeraInscripcion.OficinaID = ddlOficinas.SelectedValue;
 			objprimeraInscripcion.AnoProceso = ddlAnoProceso.SelectedValue;
+			objprimeraInscripcion.AnoFiltro = ddlAnoProceso.SelectedValue;
 			objprimeraInscripcion.chkTag = chkTAG.Checked;
 			objprimeraInscripcion.chkPlacas = chkPlacas.Checked;
 			objprimeraInscripcion.chkRUT = chkRUT.Checked;
@@ -607,10 +796,9 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			objprimeraInscripcion.AdquirenteID = txtAdquirenteID.Text;
 			objprimeraInscripcion.RepresentanteLegalID = txtRepresentanteLegalID.Text;
 			objprimeraInscripcion.DireccionClienteID = txtDireccionClienteID.Text;
-			objprimeraInscripcion.ContactoClienteID = ContactoClienteID.Text;
 			objprimeraInscripcion.DireccionAdquirenteID = txtDireccionAdquirenteID.Text;
 
-			 dtDatos = PrimeraInscripcion.INS_PrimeraInscripcion(objprimeraInscripcion);
+			dtDatos = PrimeraInscripcion.INS_PrimeraInscripcion(objprimeraInscripcion);
 			if (dtDatos.Rows.Count > 0)
 			{
 				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
@@ -619,7 +807,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 				}
 				else
 				{
-					throw new ApplicationException("Error al insertar Primera Inscripcion") ;
+					throw new ApplicationException(dtDatos.Rows[0]["errorDescription"].ToString());
 				}
 			}
 
@@ -628,61 +816,16 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			#endregion PRIMERA INSCRIPCION
 
 
-			#region DIRECCION CLIENTE
+			#region DOCUMENTOS RECIBIDOS
+			#endregion --DOCUMENTOS RECIBIDOS
 
-			//Aqui grabar Direccion Cliente			DireccionClienteID
-			objDireccion.PersonaEmpresaID = txtClienteID.Text;
-			objDireccion.DireccionID = txtDireccionClienteID.Text;
-			objDireccion.Direccion = txtDireccionCliente.Text;
-			objDireccion.NumeroDireccion = txtNumeroDireccionCliente.Text;
-			objDireccion.ComplementoDireccion = txtComplementoDireccionCliente.Text;
-			objDireccion.ComunaID = ddlComunaCliente.SelectedValue;
+			#region DESPACHOS
+			#endregion --DESPACHOS
 
-			dtDatos = Direcciones.INS_Direccion(objDireccion);
-			if (dtDatos.Rows.Count > 0)
-			{
-				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
-				{
-					txtDireccionClienteID.Text = dtDatos.Rows[0]["ID"].ToString();
-				}
-				else
-				{
-					throw new ApplicationException("Error al insertar Direccion Cliente");
-				}
-			}
-
-
-			#endregion DIRECCION CLIENTE
-
-
-
-			#region DIRECCION ADQUIRENTE
-			//Aqui grabar Direccion Adquirente   DireccionAdquirenteID
-			objDireccion.PersonaEmpresaID = txtAdquirenteID.Text;
-			objDireccion.DireccionID = txtDireccionAdquirenteID.Text;
-			objDireccion.Direccion = txtDireccionAdquirente.Text;
-			objDireccion.NumeroDireccion = txtNumeroDireccionAdquirente.Text;
-			objDireccion.ComplementoDireccion = txtComplementoDireccionAdquirente.Text;
-			objDireccion.ComunaID = ddlComunaAdquirente.SelectedValue;
-
-
-			dtDatos = Direcciones.INS_Direccion(objDireccion);
-			if (dtDatos.Rows.Count > 0)
-			{
-				if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
-				{
-					txtDireccionAdquirenteID.Text = dtDatos.Rows[0]["ID"].ToString();
-				}
-				else
-				{
-					throw new ApplicationException("Error al insertar Direccion Adquirente");
-				}
-			}
-
-			#endregion DIRECCION ADQUIRENTE
 
 		}
-		catch (Exception ex) {
+		catch (Exception ex)
+		{
 
 			Utilities.utils.Send_Error(ex);
 			Server.Transfer("Error.aspx");
@@ -818,6 +961,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		#region -- DATOS DOCUMENTOS_RECIBIDOS --
 		grvDocuemntosRecibidos.DataSource = null;
 		grvDocuemntosRecibidos.DataBind();
+
 		#endregion -- DATOS DOCUMENTOS_RECIBIDOS --
 
 
@@ -832,6 +976,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	protected void btnEliminarPrimera_Click(object sender, EventArgs e)
 	{
 	}
+
 	protected void btnSalirPrimera_Click(object sender, EventArgs e)
 	{
 	}

@@ -83,7 +83,10 @@ namespace DataLayer
           daConsulta.SelectCommand.Parameters.Add(pParameters[i]);
 
 				DataSet dsResultado = new DataSet();
-				daConsulta.Fill(dsResultado);
+				daConsulta.SelectCommand.ExecuteReader(CommandBehavior.Default);
+				//SqlDataReader dr = daConsulta.SelectCommand.ExecuteReader(CommandBehavior.CloseConnection);
+				daConsulta.SelectCommand.ExecuteNonQuery();
+				//dsResultado.Tables[0].Load(dr);
 				Close();
         DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
         return dsResultado.Tables[0];

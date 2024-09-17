@@ -39,8 +39,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="personasEmpresas.cs" />
-    <Compile Include="modelContacto.cs" />
+    <Compile Include="modelDoctosRecibidos.cs" />
+    <Compile Include="modelLogin.cs" />
+    <Compile Include="modelPersonasEmpresas.cs" />
     <Compile Include="modelDireccion.cs" />
     <Compile Include="modelPrimeraInscripcion.cs" />
   </ItemGroup>
