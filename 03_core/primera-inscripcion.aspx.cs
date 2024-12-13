@@ -11,14 +11,20 @@ using System.Configuration;
 using Models;
 using System.Diagnostics.Contracts;
 using DataLayer;
+using System.Web.Services;
+using System.Web.Script.Services;
+using System.Web.Script.Serialization;
+using System.EnterpriseServices;
 
 public partial class primera_inscripcion : System.Web.UI.Page
 {
+	static string staticEmpresaID = "";
 	string EmpresaID = "";
 	HttpCookie userInfo = new HttpCookie("CoreInfo");
 	int UserID = 0;
 
 	LoginModel DatosLogin = new LoginModel();
+	static LoginModel staticDatosLogin = new LoginModel();
 
 
 	protected void Page_Load(object sender, EventArgs e)
@@ -27,6 +33,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		master = this.Master;
 		DropDownList cmbEmpresas = master.FindControl("cmbEmpresas") as DropDownList;
 		EmpresaID = cmbEmpresas.SelectedValue;
+		staticEmpresaID = EmpresaID;
 
 
 		// Aqui rescato datps de la Cookie
@@ -39,6 +46,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			DatosLogin.UsuarioID = UserID.ToString();
 			DatosLogin.NombreUsuario = userInfo["Name"].ToString();
 			DatosLogin.EmailUsuario = userInfo["Email"].ToString();
+			staticDatosLogin = DatosLogin;
 		}
 		#endregion ----- Cookie -----
 
@@ -247,7 +255,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 
 				#endregion -- DATOS VEHICULO --
 				#region -- DATOS DOCUMENTOS_RECIBIDOS --
-				LlenaDocumentosDespachos(PrimeraInscripcionID);
+				LlenaDocumentosRecibidos(PrimeraInscripcionID);
 				LlenaDespachos(PrimeraInscripcionID);
 				#endregion -- DATOS DOCUMENTOS_RECIBIDOS --
 
@@ -462,7 +470,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	//	return;
 	//}
 
-	public void LlenaDocumentosDespachos(string PrimeraInscripcionID)
+	public void LlenaDocumentosRecibidos(string PrimeraInscripcionID)
 	{
 		DataTable dtDatos = new DataTable();
 		dtDatos = DocumentosRecibidos.SEL_DocumentosRecibidos("1");
@@ -475,18 +483,6 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		return;
 	}
 
-	public void LlenaDespachos(string PrimeraInscripcionID)
-	{
-		DataTable dtDatos = new DataTable();
-		dtDatos = Despachos.SEL_Despachos("1");
-		if (dtDatos.Rows.Count > 0)
-		{
-			grvDespachos.DataSource = dtDatos;
-			grvDespachos.DataBind();
-		}
-
-		return;
-	}
 
 	protected void btnGrabarDoctosRecibidos_OnClick(object sender, EventArgs e)
 	{
@@ -496,7 +492,6 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		DataTable dtDatos;
 		#endregion ----- END DECLARACIONES -----
 
-		//TODO: probar insercion de docmuentos y personas, emisor documento con rut carol
 
 		#region		EMISOR DOCUMENTO
 		objPersona.EmpresaID = EmpresaID;
@@ -519,7 +514,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 			}
 			else
 			{
-				throw new Exception("Error al insertar Emisor Documento " +dtDatos.Rows[0]["errorDescription"].ToString());
+				throw new Exception("Error al insertar Emisor Documento " + dtDatos.Rows[0]["errorDescription"].ToString());
 			}
 		}
 
@@ -559,15 +554,68 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		}
 
 
-
+		LlenaDocumentosRecibidos(txtPrimeraInscripcionID.Text);
 
 
 	}
 
+	public void LlenaDespachos(string PrimeraInscripcionID)
+	{
+		DataTable dtDatos = new DataTable();
+		dtDatos = Despachos.SEL_Despachos("1");
+		if (dtDatos.Rows.Count > 0)
+		{
+			grvDespachos.DataSource = dtDatos;
+			grvDespachos.DataBind();
+		}
+
+		return;
+	}
+
+
 
 	protected void btnGrabarDespacho_OnClick(object sender, EventArgs e)
 	{
+		#region ----- DECLARACIONES  -----
+		DespachosModel objDespachosModel = new DespachosModel();
+		DataTable dtDatos;
+		#endregion ----- END DECLARACIONES -----
 
+
+
+		objDocumentosRecibidos.EmpresaID = EmpresaID;
+		objDocumentosRecibidos.UsuarioID = DatosLogin.UsuarioID;
+		objDocumentosRecibidos.DocumentoRecibidoID = txtDocumentoRecibidoID.Text;
+		objDocumentosRecibidos.PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
+		objDocumentosRecibidos.TipoDocumentoID = ddlTipoDocumento.SelectedValue;
+		objDocumentosRecibidos.NaturalezaAdquisicion = txtNaturalezaAdquisición.Text;
+		objDocumentosRecibidos.NumeroDocumentoCausa = txtNroDocumentoCausa.Text;
+		objDocumentosRecibidos.ValorNeto = txtValorNetoFactura.Text;
+		objDocumentosRecibidos.ValorIVAFactura = txtValorIvaFactura.Text;
+		objDocumentosRecibidos.ValorTotalFactura = txtValorTotalFactura.Text;
+		objDocumentosRecibidos.LugarDocumento = txtLugarDocumento.Text;
+		objDocumentosRecibidos.FechaDocumento = txtFechaDocumento.Text;
+		objDocumentosRecibidos.NombreAutorizanteEmisor = txtNombreAutorizante.Text;
+		objDocumentosRecibidos.AcreedorBeneficiarioDemandante = txtAcreedorBeneficiarioDemandante.Text;
+		objDocumentosRecibidos.PDF = txtPDFDocumento.Text;
+		objDocumentosRecibidos.EmisorDocumentoID = txtEmisorDocumentoID.Text;
+
+
+		dtDatos = documentosRecibidos.INS_DocumentoRecibido(objDocumentosRecibidos);
+		if (dtDatos.Rows.Count > 0)
+		{
+			if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
+			{
+				txtDocumentoRecibidoID.Text = dtDatos.Rows[0]["ID"].ToString();
+			}
+			else
+			{
+				throw new Exception(dtDatos.Rows[0]["errorDescription"].ToString());
+			}
+		}
+
+
+		LlenaDocumentosRecibidos(txtPrimeraInscripcionID.Text);
 	}
 
 
@@ -610,7 +658,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 				{
 					throw new Exception("Error al insertar Cliente " + dtDatos.Rows[0]["errorDescription"].ToString());
 				}
- 			}
+			}
 
 
 			#endregion ---- END CLIENTE ----
@@ -637,7 +685,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 				}
 				else
 				{
-					throw new Exception("Error al insertar Representante Legal "+ dtDatos.Rows[0]["errorDescription"].ToString());
+					throw new Exception("Error al insertar Representante Legal " + dtDatos.Rows[0]["errorDescription"].ToString());
 				}
 			}
 
@@ -981,8 +1029,45 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	{
 	}
 
+	[WebMethod]
+	
+	public static string getPersonaEmpresa(string RUT)
+	{
+		PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
+		DataTable dtPersonaEmpresa;
+		dtPersonaEmpresa = PersonaEmpresas.SEL_PersonasEmpresas("", RUT);
+		if (dtPersonaEmpresa.Rows.Count > 0)
+		{
 
+			objPersona.EmpresaID = staticEmpresaID;
+			objPersona.UsuarioID = staticDatosLogin.UsuarioID;
+			objPersona.PersonaEmpresaID = dtPersonaEmpresa.Rows[0]["PersonaEmpresaID"].ToString();
+			objPersona.RUT = dtPersonaEmpresa.Rows[0]["Rut"].ToString();
+			objPersona.NombreRazonSocial = dtPersonaEmpresa.Rows[0]["nombreRazonSocial"].ToString();
+			objPersona.FonoPersona = "";
+			objPersona.EMail = "";
+			objPersona.NombreContacto = "";
+			objPersona.FonoContacto = "";
+			objPersona.EMailContacto = "";
+		}
+		else
+		{
+			objPersona.EmpresaID = staticEmpresaID;
+			objPersona.UsuarioID = staticDatosLogin.UsuarioID;
+			objPersona.PersonaEmpresaID = "-1";
+			objPersona.RUT = "";
+			objPersona.NombreRazonSocial = "";
+			objPersona.FonoPersona = "";
+			objPersona.EMail = "";
+			objPersona.NombreContacto = "";
+			objPersona.FonoContacto = "";
+			objPersona.EMailContacto = "";
+		}
 
+		JavaScriptSerializer js = new JavaScriptSerializer();
+
+		return js.Serialize(objPersona);
+	}
 
 	//protected void rptrDocumentosRecibidos_ItemDataBound(object sender, RepeaterItemEventArgs e)
 	//{
@@ -1061,3 +1146,14 @@ public partial class primera_inscripcion : System.Web.UI.Page
 
 
 }
+
+
+//DONE: revisar que al agregar documento recibido, se actualice la grilla
+//DONE: Emisor documento debe ser un rut
+//DONE: Implementar api que busque y devuelva datos de RUT al salir de la caja de RUT
+//DONE: Asignar busqueda de persona en todas las lupas del formulario
+//TODO: alinear campos numericos a la derecha
+//TODO: formatear campos rut
+//TODO: hacer popup para ingreso de datos en ventanas inserciones de documwentos
+//TODO: formateo de fechas
+//TODO: dejar desactivados los botones apra agregar Documentos y despachos, se debe grabar el vehiculo nuevo antes de habilitar botones, solo si hay ID de Primera

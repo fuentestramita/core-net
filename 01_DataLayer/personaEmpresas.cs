@@ -20,7 +20,7 @@ namespace DataLayer
 			dAccess.Open("tramita_db");
 			SqlParameter[] Param = new SqlParameter[2];
 
-			dAccess.AddParameter(ref pPos, "@PersonaEmpresaID", PersonaEmpresaID, SqlDbType.BigInt, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@PersonaEmpresaID", utils.isNull(PersonaEmpresaID,"0"), SqlDbType.BigInt, 20, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@RUT", RUT, SqlDbType.VarChar, 0, 0, ParameterDirection.Input, ref Param);
 
 			return dAccess.getData("SEL_PersonasEmpresas", Param).Tables[0];

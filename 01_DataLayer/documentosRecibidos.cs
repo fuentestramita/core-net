@@ -31,7 +31,7 @@ namespace DataLayer
 			DataAccess dAccess = new DataAccess();
 
 			dAccess.Open("tramita_db");
-			SqlParameter[] Param = new SqlParameter[65];
+			SqlParameter[] Param = new SqlParameter[16];
 
 			dAccess.AddParameter(ref pPos, "@EmpresaID", objDocumentosRecibidos.EmpresaID, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
 			dAccess.AddParameter(ref pPos, "@UsuarioID", objDocumentosRecibidos.UsuarioID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);

@@ -2,6 +2,32 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="Server">
 
+
+	<asp:ScriptManager ID="scriptmanager1" runat="Server" EnablePageMethods="true"></asp:ScriptManager>
+	<script language="javascript">
+	
+		function BuscaPersona(Origen, IDDestino, Destino ) {
+			PageMethods.getPersonaEmpresa(Origen.val(), onSuccess, onFailure);
+			function onSuccess(result) {
+				if (JSON.parse(result).PersonaEmpresaID == -1) {
+					alert("Cliente no existe");
+					IDDestino.val('-1');
+					Destino.val('');
+					Destino.focus();
+					return false;
+				}
+				if (JSON.parse(result).PersonaEmpresaID > 0) {
+					IDDestino.val(JSON.parse(result).PersonaEmpresaID);
+					Destino.val(JSON.parse(result).NombreRazonSocial);
+				}
+			}
+			function onFailure(error) {
+				alert("Error " + error);
+			}
+			return false;
+
+		}
+	</script>
 	<asp:TextBox ID="txtPrimeraInscripcionID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
 
 	<div class="page-inner">
@@ -151,9 +177,9 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">RUT Cliente</label>
-							<asp:TextBox ID="txtClienteID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
+							<asp:TextBox ID="txtClienteID" style="display:none;" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRUTCliente" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-							<button class="btn-xs btn-primary">
+							<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRUTCliente'), $('#txtClienteID'), $('#txtNombreRazonSocialCliente')));">
 								<span class="oi oi-magnifying-glass mr-1"></span>
 							</button>
 
@@ -189,9 +215,9 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">Rut Representante Legal</label>
-							<asp:TextBox ID="txtRepresentanteLegalID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
+							<asp:TextBox ID="txtRepresentanteLegalID" style="display:none;"  runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRUTRepresentanteLegal" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
-							<button class="btn-xs btn-primary">
+							<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRUTRepresentanteLegal'), $('#txtRepresentanteLegalID'), $('#txtNombreRepresentanteLegal')));">
 								<span class="oi oi-magnifying-glass mr-1"></span>
 							</button>
 
@@ -634,9 +660,9 @@
 						<!-- form -->
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">RUT</label>
-							<asp:TextBox ID="txtAdquirenteID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
+							<asp:TextBox ID="txtAdquirenteID" style="display:none;"  runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRutAdquirente" CssClass="form-input-lg flatpickr-input" placeholder="" runat="server"></asp:TextBox>
-							<button class="btn-xs btn-primary">
+							<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRutAdquirente'), $('#txtAdquirenteID'), $('#txtNombreRazonSocialAdquirente')));">
 								<span class="oi oi-magnifying-glass mr-1"></span>
 							</button>
 
@@ -731,9 +757,9 @@
 								</div>
 								<div class="form-group">
 									<label class="form-label-lg" for="select2-data-remote">RUT Documento</label>
-									<asp:TextBox ID="txtEmisorDocumentoID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
+									<asp:TextBox ID="txtEmisorDocumentoID" style="display:none;"  runat="server" BorderColor="Red"></asp:TextBox>
 									<asp:TextBox ID="txtRutDocumento" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-									<button class="btn-xs btn-primary">
+									<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRutDocumento'), $('#txtEmisorDocumentoID'), $('#txtRazonSocialEmisorDocumento')));">
 										<span class="oi oi-magnifying-glass mr-1"></span>
 									</button>
 
