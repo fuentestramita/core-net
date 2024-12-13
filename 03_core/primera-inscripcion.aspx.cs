@@ -10,7 +10,6 @@ using static System.Net.Mime.MediaTypeNames;
 using System.Configuration;
 using Models;
 using System.Diagnostics.Contracts;
-using DataLayer;
 using System.Web.Services;
 using System.Web.Script.Services;
 using System.Web.Script.Serialization;
@@ -268,6 +267,8 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	{
 
 		DataSet dsAll = Comun.SEL_ALL_ds();
+		DataTable dtCourier = Despachos.SEL_ServicioCourier();
+		DataTable dtItems = Despachos.SEL_Items();
 
 		ddlEstado.DataValueField = "id";
 		ddlEstado.DataTextField = "estado";
@@ -450,6 +451,19 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		ddlTipoDocumento.DataBind();
 
 
+		ddlCourier.DataValueField = "ServicioCourierID";
+		ddlCourier.DataTextField = "ServicioCourier";
+		ddlCourier.DataSource = dtCourier;
+		ddlCourier.DataBind();
+		ddlCourier.Items.Insert(0, new ListItem("--- SELECCIONE SERVICIO COURIER ---", "-1"));
+
+		ddlItem.DataValueField = "ItemID";
+		ddlItem.DataTextField = "Item";
+		ddlItem.DataSource = dtItems;
+		ddlItem.DataBind();
+		ddlItem.Items.Insert(0, new ListItem("--- SELECCIONE ITEM DESPACHO ---", "-1"));
+
+
 
 		return;
 	}
@@ -540,7 +554,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		objDocumentosRecibidos.EmisorDocumentoID = txtEmisorDocumentoID.Text;
 
 
-		dtDatos = documentosRecibidos.INS_DocumentoRecibido(objDocumentosRecibidos);
+		dtDatos = DocumentosRecibidos.INS_DocumentoRecibido(objDocumentosRecibidos);
 		if (dtDatos.Rows.Count > 0)
 		{
 			if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
@@ -578,35 +592,37 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	{
 		#region ----- DECLARACIONES  -----
 		DespachosModel objDespachosModel = new DespachosModel();
-		DataTable dtDatos;
+		DataTable dtDatos = new DataTable();
 		#endregion ----- END DECLARACIONES -----
 
 
 
-		objDocumentosRecibidos.EmpresaID = EmpresaID;
-		objDocumentosRecibidos.UsuarioID = DatosLogin.UsuarioID;
-		objDocumentosRecibidos.DocumentoRecibidoID = txtDocumentoRecibidoID.Text;
-		objDocumentosRecibidos.PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
-		objDocumentosRecibidos.TipoDocumentoID = ddlTipoDocumento.SelectedValue;
-		objDocumentosRecibidos.NaturalezaAdquisicion = txtNaturalezaAdquisición.Text;
-		objDocumentosRecibidos.NumeroDocumentoCausa = txtNroDocumentoCausa.Text;
-		objDocumentosRecibidos.ValorNeto = txtValorNetoFactura.Text;
-		objDocumentosRecibidos.ValorIVAFactura = txtValorIvaFactura.Text;
-		objDocumentosRecibidos.ValorTotalFactura = txtValorTotalFactura.Text;
-		objDocumentosRecibidos.LugarDocumento = txtLugarDocumento.Text;
-		objDocumentosRecibidos.FechaDocumento = txtFechaDocumento.Text;
-		objDocumentosRecibidos.NombreAutorizanteEmisor = txtNombreAutorizante.Text;
-		objDocumentosRecibidos.AcreedorBeneficiarioDemandante = txtAcreedorBeneficiarioDemandante.Text;
-		objDocumentosRecibidos.PDF = txtPDFDocumento.Text;
-		objDocumentosRecibidos.EmisorDocumentoID = txtEmisorDocumentoID.Text;
+		objDespachosModel.EmpresaID = EmpresaID;
+		objDespachosModel.UsuarioID = DatosLogin.UsuarioID;
+		objDespachosModel.DespachoID = txtDespachoID.Text;
+		objDespachosModel.PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
+		objDespachosModel.ItemID = ddlItem.SelectedValue;
+		objDespachosModel.Origen = txtOrigenDespacho.Text;
+		objDespachosModel.SolicitaDespacho = chkSolicitaDespacho.Checked.ToString();
+		objDespachosModel.ImprimirParaEntrega = chkImprimirParaEntrega.Checked.ToString();
+		objDespachosModel.CodigoDespacho = txtCodigoDespachoCHPX.Text;
+		objDespachosModel.EntregaEfectuada = chkEntregaEfectuada.Checked.ToString();
+		objDespachosModel.PDFEntrega = txtPDFEntrega.Text;
+		objDespachosModel.fechaRecepcion = txtFechaRecepcionDespacho.Text;
+		objDespachosModel.FechaEntrega = txtFechaEntregaDespacho.Text;
+		objDespachosModel.Observacion = txtObservacionesEntrega.Text;
+		objDespachosModel.FechaRecepcionCourier = txtFechaRecepcionCHXP.Text;
+		objDespachosModel.FechaEntregaCourier = txtFechaEntregaCHXP.Text;
+		objDespachosModel.CodigoDespachoCourier = txtCodigoDespachoCHPX.Text;
+		objDespachosModel.ServicioCourierID = ddlCourier.SelectedValue;
 
 
-		dtDatos = documentosRecibidos.INS_DocumentoRecibido(objDocumentosRecibidos);
+		dtDatos = Despachos.INS_Despacho(objDespachosModel);
 		if (dtDatos.Rows.Count > 0)
 		{
 			if (dtDatos.Rows[0]["ErrorNumber"].ToString() == "0")
 			{
-				txtDocumentoRecibidoID.Text = dtDatos.Rows[0]["ID"].ToString();
+				txtDespachoID.Text = dtDatos.Rows[0]["ID"].ToString();
 			}
 			else
 			{
@@ -615,7 +631,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		}
 
 
-		LlenaDocumentosRecibidos(txtPrimeraInscripcionID.Text);
+		LlenaDespachos(txtPrimeraInscripcionID.Text);
 	}
 
 
@@ -1152,6 +1168,8 @@ public partial class primera_inscripcion : System.Web.UI.Page
 //DONE: Emisor documento debe ser un rut
 //DONE: Implementar api que busque y devuelva datos de RUT al salir de la caja de RUT
 //DONE: Asignar busqueda de persona en todas las lupas del formulario
+//TODO: hacer editar de Docunmentos recibidos y despachos
+//TODO: hacer validaciones
 //TODO: alinear campos numericos a la derecha
 //TODO: formatear campos rut
 //TODO: hacer popup para ingreso de datos en ventanas inserciones de documwentos

@@ -851,9 +851,15 @@
 						</div>
 
 						<div id="DespachosHeader" style="display: none;">
+							<asp:TextBox ID="txtDespachoID" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
 							<div class="form-group">
 								<label class="form-label-lg" for="select2-data-remote">Item</label>
 								<asp:DropDownList ID="ddlItem" CssClass="form-input-lg" runat="server">
+								</asp:DropDownList>
+							</div>
+							<div class="form-group">
+								<label class="form-label-lg" for="select2-data-remote">Courier</label>
+								<asp:DropDownList ID="ddlCourier" CssClass="form-input-lg" runat="server">
 								</asp:DropDownList>
 							</div>
 							<div class="form-group">
