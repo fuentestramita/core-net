@@ -12,15 +12,17 @@ namespace DataLayer
 {
 	static public class despachos
 	{
-		static public DataTable SEL_Despachos(string PrimeraInscripcionID)
+		static public DataTable SEL_Despachos(string PrimeraInscripcionID, string DespachoID)
 		{
 			int pPos = 0;
 			DataAccess dAccess = new DataAccess();
 
 			dAccess.Open("tramita_db");
-			SqlParameter[] Param = new SqlParameter[1];
+			SqlParameter[] Param = new SqlParameter[2];
 
 			dAccess.AddParameter(ref pPos, "@PrimeraInscripcionID", PrimeraInscripcionID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@DespachoID", DespachoID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
+			
 
 			return dAccess.getData("SEL_Despachos", Param).Tables[0];
 

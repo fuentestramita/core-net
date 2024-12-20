@@ -4,9 +4,47 @@
 
 
 	<asp:ScriptManager ID="scriptmanager1" runat="Server" EnablePageMethods="true"></asp:ScriptManager>
+	<style>
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: hidden; /* Enable scroll if needed */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+
+		/* Modal Content/Box */
+		.modal-content {
+			background-color: #fefefe;
+			margin: 5% auto; /* 15% from the top and centered */
+			padding: 20px;
+			border: 1px solid #888;
+			width: 80%; /* Could be more or less, depending on screen size */
+		}
+
+		/* The Close Button */
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+			.close:hover,
+			.close:focus {
+				color: black;
+				text-decoration: none;
+				cursor: pointer;
+			}
+	</style>
 	<script language="javascript">
-	
-		function BuscaPersona(Origen, IDDestino, Destino ) {
+
+		function BuscaPersona(Origen, IDDestino, Destino) {
 			PageMethods.getPersonaEmpresa(Origen.val(), onSuccess, onFailure);
 			function onSuccess(result) {
 				if (JSON.parse(result).PersonaEmpresaID == -1) {
@@ -25,10 +63,89 @@
 				alert("Error " + error);
 			}
 			return false;
-
 		}
+
+
+		function editaDespachos(IDOrigen) {
+			PageMethods.getDespacho($("#txtPrimeraInscripcionID").val(), IDOrigen, onSuccess, onFailure);
+			function onSuccess(result) {
+				if (JSON.parse(result).DespachoID == -1) {
+					alert("Error: no se pudo recuperar el despacho")
+					return false;
+				}
+
+				if (JSON.parse(result).DespachoID > 0) {
+					$("#txtDespachoID").val(JSON.parse(result).DespachoID);
+					$("#txtOrigenDespacho").val(JSON.parse(result).Origen);
+					$("#txtCodigoDespachoCHPX").val(JSON.parse(result).CodigoDespachoCourier);
+					$("#txtPDFEntrega").val(JSON.parse(result).PDFEntrega);
+					$("#txtFechaRecepcionDespacho").val(JSON.parse(result).fechaRecepcion);
+					$("#txtFechaEntregaDespacho").val(JSON.parse(result).FechaEntrega);
+					$("#txtObservacionesEntrega").val(JSON.parse(result).Observacion);
+					$("#txtFechaRecepcionCHXP").val(JSON.parse(result).FechaRecepcionCourier);
+					$("#txtFechaEntregaCHXP").val(JSON.parse(result).FechaEntregaCourier);
+					$("#txtCodigoDespachoCHXP").val(JSON.parse(result).CodigoDespachoCourier);
+
+					$("#ddlCourier").val(JSON.parse(result).ServicioCourierID);
+					$("#ddlItem").val(JSON.parse(result).ItemID);
+					if (JSON.parse(result).SolicitaDespacho == "True")
+						$("#chkSolicitaDespacho").prop("checked", true);
+
+					if (JSON.parse(result).ImprimirParaEntrega == "True")
+						$("#chkImprimirParaEntrega").prop("checked", true);
+
+					if (JSON.parse(result).EntregaEfectuada == "True")
+						$("#chkEntregaEfectuada").prop("checked", true);
+
+				}
+				//return false;
+			}
+			function onFailure(error) {
+				alert("Error " + error.Message);
+			}
+			return toggleDespachosHeader();
+			//return false;
+		}
+
+		function editaDoctosRecibidos(IDOrigen) {
+			PageMethods.getDocumentoRecibido($("#txtPrimeraInscripcionID").val(), IDOrigen, onSuccess, onFailure);
+			function onSuccess(result) {
+				if (JSON.parse(result).DespachoID == -1) {
+					alert("Error: no se pudo recuperar el Documento Recibido")
+					return false;
+				}
+				if (JSON.parse(result).DocumentoRecibidoID > 0) {
+					$("#txtDocumentoRecibidoID").val(JSON.parse(result).DocumentoRecibidoID);
+					$("#ddlTipoDocumento").val(JSON.parse(result).TipoDocumentoID);
+					$("#txtNaturalezaAdquisición").val(JSON.parse(result).NaturalezaAdquisicion);
+					$("#txtNroDocumentoCausa").val(JSON.parse(result).NumeroDocumentoCausa);
+					$("#txtEmisorDocumentoID").val(JSON.parse(result).EmisorDocumentoID);
+					$("#txtRutDocumento").val(JSON.parse(result).RutEmisorDocumento);
+					$("#txtRazonSocialEmisorDocumento").val(JSON.parse(result).NombreRazonSocialEmisorDocumento);
+					$("#txtValorNetoFactura").val(JSON.parse(result).ValorNeto);
+					$("#txtValorTotalFactura").val(JSON.parse(result).ValorTotalFactura);
+					$("#txtValorIvaFactura").val(JSON.parse(result).ValorIVAFactura);
+					$("#txtLugarDocumento").val(JSON.parse(result).LugarDocumento);
+					$("#txtFechaDocumento").val(JSON.parse(result).FechaDocumento);
+					$("#txtNombreAutorizante").val(JSON.parse(result).NombreAutorizanteEmisor);
+					$("#txtAcreedorBeneficiarioDemandante").val(JSON.parse(result).AcreedorBeneficiarioDemandante);
+					$("#txtPDFDocumento").val(JSON.parse(result).PDF);
+					
+
+
+
+				}
+				//return false;
+			}
+			function onFailure(error) {
+				alert("Error " + error);
+			}
+			return toggleDoctosRecibidosHeader();
+			//return false;
+		}
+
 	</script>
-	<asp:TextBox ID="txtPrimeraInscripcionID" Visible="false" runat="server" BorderColor="Red"></asp:TextBox>
+	<asp:TextBox ID="txtPrimeraInscripcionID" Style="display: none;" runat="server" BorderColor="Red"></asp:TextBox>
 
 	<div class="page-inner">
 		<!-- .page-title-bar -->
@@ -177,7 +294,7 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">RUT Cliente</label>
-							<asp:TextBox ID="txtClienteID" style="display:none;" runat="server" BorderColor="Red"></asp:TextBox>
+							<asp:TextBox ID="txtClienteID" Style="display: none;" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRUTCliente" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRUTCliente'), $('#txtClienteID'), $('#txtNombreRazonSocialCliente')));">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -215,7 +332,7 @@
 
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">Rut Representante Legal</label>
-							<asp:TextBox ID="txtRepresentanteLegalID" style="display:none;"  runat="server" BorderColor="Red"></asp:TextBox>
+							<asp:TextBox ID="txtRepresentanteLegalID" Style="display: none;" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRUTRepresentanteLegal" CssClass="form-input-sm flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRUTRepresentanteLegal'), $('#txtRepresentanteLegalID'), $('#txtNombreRepresentanteLegal')));">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -660,7 +777,7 @@
 						<!-- form -->
 						<div class="form-group">
 							<label class="form-label-lg" for="select2-data-remote">RUT</label>
-							<asp:TextBox ID="txtAdquirenteID" style="display:none;"  runat="server" BorderColor="Red"></asp:TextBox>
+							<asp:TextBox ID="txtAdquirenteID" Style="display: none;" runat="server" BorderColor="Red"></asp:TextBox>
 							<asp:TextBox ID="txtRutAdquirente" CssClass="form-input-lg flatpickr-input" placeholder="" runat="server"></asp:TextBox>
 							<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRutAdquirente'), $('#txtAdquirenteID'), $('#txtNombreRazonSocialAdquirente')));">
 								<span class="oi oi-magnifying-glass mr-1"></span>
@@ -709,7 +826,7 @@
 						<div>
 							<div>
 								<div class="btn-group">
-									<button class="tile tile-c ircle bg-warning" onclick="return( toggleDoctosRecibidosHeader());">
+									<button class="btn bg-warning" onclick="return( toggleDoctosRecibidosHeader());">
 										<span class="oi oi-plus"></span>
 									</button>
 								</div>
@@ -717,6 +834,13 @@
 							<asp:GridView ID="grvDocuemntosRecibidos" CssClass="table-responsive table table-hover table-striped" HeaderStyle-CssClass="thead-dark" UseAccessibleHeader="true" GridLines="None" AutoGenerateColumns="False" runat="server">
 
 								<Columns>
+									<asp:TemplateField HeaderText="Edit">
+										<ItemTemplate>
+											<button class="btn-xs  btn-primary" onclick="return( editaDoctosRecibidos('<%# Eval("id")%>'));">
+												<span class="oi oi-pencil"></span>
+											</button>
+										</ItemTemplate>
+									</asp:TemplateField>
 									<asp:BoundField DataField="documentoRecibidoID" HeaderText="documentoRecibidoID" Visible="false" />
 									<asp:BoundField DataField="tipoDocumento" HeaderText="Tipo Documento" />
 									<asp:BoundField DataField="nroDocumentoCausa" HeaderText="Nro.Documento" />
@@ -736,78 +860,83 @@
 							</asp:GridView>
 						</div>
 
-						<div>
+						<div id="modalDoctosRecibidos" class="modal">
+							<div class="modal-content">
+								<span id="closeModalDoctosRecibidos" class="close" style="text-align: right"><i class="fa fa-times text-red"></i></span>
 
-							<div id="DoctosRecibidosHeader" style="display: none;">
-								<h4 class="card-title">Nuevo</h4>
-								<h6 class="card-subtitle mb-4"></h6>
-								<asp:TextBox ID="txtDocumentoRecibidoID" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Tipo Documento</label>
-									<asp:DropDownList ID="ddlTipoDocumento" DataValueField="ID" DataTextField="tipoDocumento" CssClass="form-input-lg" runat="server">
-									</asp:DropDownList>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Naturaleza Adquisición</label>
-									<asp:TextBox ID="txtNaturalezaAdquisición" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Número Documento/Causa</label>
-									<asp:TextBox ID="txtNroDocumentoCausa" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">RUT Documento</label>
-									<asp:TextBox ID="txtEmisorDocumentoID" style="display:none;"  runat="server" BorderColor="Red"></asp:TextBox>
-									<asp:TextBox ID="txtRutDocumento" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-									<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRutDocumento'), $('#txtEmisorDocumentoID'), $('#txtRazonSocialEmisorDocumento')));">
-										<span class="oi oi-magnifying-glass mr-1"></span>
-									</button>
 
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Razón Social Proveedor</label>
-									<asp:TextBox ID="txtRazonSocialEmisorDocumento" CssClass="form-input-xl" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Valor Neto Factura</label>
-									<asp:TextBox ID="txtValorNetoFactura" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Valor IVA Factura</label>
-									<asp:TextBox ID="txtValorIvaFactura" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Valor Total Factura</label>
-									<asp:TextBox ID="txtValorTotalFactura" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Lugar Documento</label>
-									<asp:TextBox ID="txtLugarDocumento" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Fecha Documento</label>
-									<asp:TextBox ID="txtFechaDocumento" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Nombre Autorizante</label>
-									<asp:TextBox ID="txtNombreAutorizante" CssClass="form-input-xl" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">Acreedor/Beneficiario/Demandante</label>
-									<asp:TextBox ID="txtAcreedorBeneficiarioDemandante" CssClass="form-input-xl" placeholder="" runat="server"></asp:TextBox>
-								</div>
-								<div class="form-group">
-									<label class="form-label-lg" for="select2-data-remote">PDF</label>
-									<asp:TextBox ID="txtPDFDocumento" CssClass="form-input-lg" placeholder="" runat="server"></asp:TextBox>
-									<button class="btn-xs btn-primary">
-										<span class="oi oi-data-transfer-download mr-1"></span>
-									</button>
-								</div>
-								<div class="form-group">
-									<asp:Button ID="btnGrabarDoctosRecibidos" Text="Grabar" CssClass="btn btn-primary" OnClick="btnGrabarDoctosRecibidos_OnClick" runat="server" />
+								<div id="DoctosRecibidosHeader">
+
+										<h1 class="page-title">DOCUMENTOS RECIBIDOS</h1>
+									<asp:TextBox ID="txtDocumentoRecibidoID" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Tipo Documento</label>
+										<asp:DropDownList ID="ddlTipoDocumento" DataValueField="ID" DataTextField="tipoDocumento" CssClass="form-input-lg" runat="server">
+										</asp:DropDownList>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Naturaleza Adquisición</label>
+										<asp:TextBox ID="txtNaturalezaAdquisición" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Número Documento/Causa</label>
+										<asp:TextBox ID="txtNroDocumentoCausa" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">RUT Documento</label>
+										<asp:TextBox ID="txtEmisorDocumentoID" Style="display: none;" runat="server" BorderColor="Red"></asp:TextBox>
+										<asp:TextBox ID="txtRutDocumento" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
+										<button class="btn-xs btn-primary" onclick="return(BuscaPersona($('#txtRutDocumento'), $('#txtEmisorDocumentoID'), $('#txtRazonSocialEmisorDocumento')));">
+											<span class="oi oi-magnifying-glass mr-1"></span>
+										</button>
+
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Razón Social Proveedor</label>
+										<asp:TextBox ID="txtRazonSocialEmisorDocumento" CssClass="form-input-xl" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Valor Neto Factura</label>
+										<asp:TextBox ID="txtValorNetoFactura" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Valor IVA Factura</label>
+										<asp:TextBox ID="txtValorIvaFactura" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Valor Total Factura</label>
+										<asp:TextBox ID="txtValorTotalFactura" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Lugar Documento</label>
+										<asp:TextBox ID="txtLugarDocumento" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Fecha Documento</label>
+										<asp:TextBox ID="txtFechaDocumento" CssClass="form-input-sm" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Nombre Autorizante</label>
+										<asp:TextBox ID="txtNombreAutorizante" CssClass="form-input-xl" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Acreedor/Beneficiario/Demandante</label>
+										<asp:TextBox ID="txtAcreedorBeneficiarioDemandante" CssClass="form-input-xl" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">PDF</label>
+										<asp:TextBox ID="txtPDFDocumento" CssClass="form-input-lg" placeholder="" runat="server"></asp:TextBox>
+										<button class="btn-xs btn-primary">
+											<span class="oi oi-data-transfer-download mr-1"></span>
+										</button>
+									</div>
+									<div class="form-group">
+										<asp:Button ID="btnGrabarDoctosRecibidos" Text="Grabar" CssClass="btn btn-primary" OnClick="btnGrabarDoctosRecibidos_OnClick" runat="server" />
+									</div>
 								</div>
 							</div>
 						</div>
+
 					</div>
 				</section>
 			</div>
@@ -822,7 +951,7 @@
 
 						<div>
 							<div class="btn-group">
-								<button class="tile tile-c ircle bg-warning" onclick="return( toggleDespachosHeader());">
+								<button id="OpenModalCreaDespacho" class="btn bg-warning" onclick="return( toggleDespachosHeader());">
 									<span class="oi oi-plus"></span>
 								</button>
 							</div>
@@ -831,8 +960,17 @@
 							<asp:GridView ID="grvDespachos" CssClass="table-responsive table table-hover table-striped" HeaderStyle-CssClass="thead-dark" UseAccessibleHeader="true" GridLines="None" AutoGenerateColumns="False" runat="server">
 
 								<Columns>
+									<asp:TemplateField HeaderText="Edit">
+										<ItemTemplate>
+
+											<button class="btn-xs  btn-primary" onclick="return( editaDespachos('<%# Eval("despachoID")%>'));">
+												<span class="oi oi-pencil"></span>
+											</button>
+										</ItemTemplate>
+									</asp:TemplateField>
 									<asp:BoundField DataField="depsachoID" HeaderText="DespachoID" Visible="false" />
 									<asp:BoundField DataField="Item" HeaderText="Item" />
+									<asp:BoundField DataField="ServicioCourier" HeaderText="Courier" />
 									<asp:BoundField DataField="Origen" HeaderText="Origen" />
 									<asp:BoundField DataField="codigoDespachoCourier" HeaderText="Código Despacho" />
 									<asp:BoundField DataField="fechaRecepcion" HeaderText="Fecha Recepcion" />
@@ -850,67 +988,75 @@
 							</asp:GridView>
 						</div>
 
-						<div id="DespachosHeader" style="display: none;">
-							<asp:TextBox ID="txtDespachoID" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Item</label>
-								<asp:DropDownList ID="ddlItem" CssClass="form-input-lg" runat="server">
-								</asp:DropDownList>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Courier</label>
-								<asp:DropDownList ID="ddlCourier" CssClass="form-input-lg" runat="server">
-								</asp:DropDownList>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Origen</label>
-								<asp:TextBox ID="txtOrigenDespacho" CssClass="form-input-lg" placeholder="" runat="server"></asp:TextBox>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Solicita Despacho</label>
-								<asp:CheckBox ID="chkSolicitaDespacho" CssClass="control-input" runat="server" />
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Imprimir para entrega</label>
-								<asp:CheckBox ID="chkImprimirParaEntrega" CssClass="control-input" runat="server" />
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Entrega efectuada</label>
-								<asp:CheckBox ID="chkEntregaEfectuada" CssClass="control-input" runat="server" />
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Observaciones</label>
-								<asp:TextBox ID="txtObservacionesEntrega" CssClass="form-input-lg flatpickr-input" placeholder="" TextMode="MultiLine" Rows="2" runat="server"></asp:TextBox>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Fecha Recepcion</label>
-								<asp:TextBox ID="txtFechaRecepcionDespacho" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Fecha Entrega</label>
-								<asp:TextBox ID="txtFechaEntregaDespacho" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Fecha Recepcion Chilexpress</label>
-								<asp:TextBox ID="txtFechaRecepcionCHXP" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Fecha Entrega Chilexpress</label>
-								<asp:TextBox ID="txtFechaEntregaCHXP" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">Código Despacho Chilexpress</label>
-								<asp:TextBox ID="txtCodigoDespachoCHPX" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
-							</div>
-							<div class="form-group">
-								<label class="form-label-lg" for="select2-data-remote">PDF Entrega</label>
-								<asp:TextBox ID="txtPDFEntrega" CssClass="form-input-lg" placeholder="" runat="server"></asp:TextBox>
-								<button class="btn-xs btn-primary">
-									<span class="oi oi-data-transfer-download mr-1"></span>
-								</button>
-							</div>
-							<div class="form-group">
-								<asp:Button ID="btnGrabarDespacho" Text="Grabar" CssClass="btn btn-primary" OnClick="btnGrabarDespacho_OnClick" runat="server" />
+						<div id="modalDespacho" class="modal">
+							<div class="modal-content">
+								<span id="closeModalDespacho" class="close" style="text-align: right"><i class="fa fa-times text-red"></i></span>
+
+
+								<div id="DespachosHeader">
+									<h1 class="page-title">DESPACHOS</h1>
+									<asp:TextBox ID="txtDespachoID" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Item</label>
+										<asp:DropDownList ID="ddlItem" CssClass="form-input-lg" runat="server">
+										</asp:DropDownList>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Courier</label>
+										<asp:DropDownList ID="ddlCourier" CssClass="form-input-lg" runat="server">
+										</asp:DropDownList>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Origen</label>
+										<asp:TextBox ID="txtOrigenDespacho" CssClass="form-input-lg" placeholder="" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Solicita Despacho</label>
+										<asp:CheckBox ID="chkSolicitaDespacho" CssClass="control-input" runat="server" />
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Imprimir para entrega</label>
+										<asp:CheckBox ID="chkImprimirParaEntrega" CssClass="control-input" runat="server" />
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Entrega efectuada</label>
+										<asp:CheckBox ID="chkEntregaEfectuada" CssClass="control-input" runat="server" />
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Observaciones</label>
+										<asp:TextBox ID="txtObservacionesEntrega" CssClass="form-input-lg flatpickr-input" placeholder="" TextMode="MultiLine" Rows="2" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Fecha Recepcion</label>
+										<asp:TextBox ID="txtFechaRecepcionDespacho" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Fecha Entrega</label>
+										<asp:TextBox ID="txtFechaEntregaDespacho" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Fecha Recepcion Chilexpress</label>
+										<asp:TextBox ID="txtFechaRecepcionCHXP" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Fecha Entrega Chilexpress</label>
+										<asp:TextBox ID="txtFechaEntregaCHXP" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">Código Despacho Chilexpress</label>
+										<asp:TextBox ID="txtCodigoDespachoCHPX" CssClass="form-input-lg flatpickr-input" placeholder="" ReadOnly="true" runat="server"></asp:TextBox>
+									</div>
+									<div class="form-group">
+										<label class="form-label-lg" for="select2-data-remote">PDF Entrega</label>
+										<asp:TextBox ID="txtPDFEntrega" CssClass="form-input-lg" placeholder="" runat="server"></asp:TextBox>
+										<button class="btn-xs btn-primary">
+											<span class="oi oi-data-transfer-download mr-1"></span>
+										</button>
+									</div>
+									<div class="form-group d-flex justify-content-center">
+										<asp:Button ID="btnGrabarDespacho" Text="Grabar" CssClass="btn btn-primary" OnClick="btnGrabarDespacho_OnClick" runat="server" />
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -934,26 +1080,38 @@
 	</div>
 	<script type="text/javascript">
 		function toggleDoctosRecibidosHeader() {
-			var DoctosRecibidosHeader = document.getElementById("DoctosRecibidosHeader");
-			if (DoctosRecibidosHeader.style.display == "block") {
-				DoctosRecibidosHeader.style.display = "none";
-			} else {
-				DoctosRecibidosHeader.style.display = "block";
+			var modal = document.getElementById("modalDoctosRecibidos");
+			modal.style.display = "block";
+
+			var span = document.getElementById("closeModalDoctosRecibidos");
+
+			span.onclick = function () {
+				modal.style.display = "none";
 			}
+
 			return false;
 		}
 
 		function toggleDespachosHeader() {
-			var DespachosHeader = document.getElementById("DespachosHeader");
-			if (DespachosHeader.style.display == "block") {
-				DespachosHeader.style.display = "none";
-			} else {
-				DespachosHeader.style.display = "block";
+			var modal = document.getElementById("modalDespacho");
+			modal.style.display = "block";
+
+			var span = document.getElementById("closeModalDespacho");
+
+			span.onclick = function () {
+				modal.style.display = "none";
 			}
+
+
 			return false;
 		}
 
 
+		window.onclick = function (event) {
+			if (event.target == modal) {
+				modal.style.display = "none";
+			}
+		}
 
 	</script>
 

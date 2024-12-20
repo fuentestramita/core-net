@@ -11,9 +11,9 @@ namespace BusinessLayer
 {
 	static public class Despachos
 	{
-		static public DataTable SEL_Despachos(string PrimeraInscripcionID)
+		static public DataTable SEL_Despachos(string PrimeraInscripcionID, string DespachoID)
 		{
-			return despachos.SEL_Despachos(PrimeraInscripcionID);
+			return despachos.SEL_Despachos(PrimeraInscripcionID, DespachoID);
 		}
 
 		static public DataTable SEL_ServicioCourier()

@@ -28,7 +28,8 @@ namespace Models
 		public string AcreedorBeneficiarioDemandante { get; set; }
 		public string PDF { get; set; }
 		public string EmisorDocumentoID { get; set; }
-
+		public string RutEmisorDocumento { get; set; }
+		public string NombreRazonSocialEmisorDocumento { get; set; }
 	}
 
 }

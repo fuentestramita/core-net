@@ -11,9 +11,9 @@ namespace BusinessLayer
 {
 	static public class DocumentosRecibidos
 	{
-		static public DataTable SEL_DocumentosRecibidos(string PrimeraInscripcionID)
+		static public DataTable SEL_DocumentosRecibidos(string PrimeraInscripcionID, string DocumentoRecibidoID)
 		{
-			return documentosRecibidos.SEL_DocumentosRecibidos(PrimeraInscripcionID);
+			return documentosRecibidos.SEL_DocumentosRecibidos(PrimeraInscripcionID, DocumentoRecibidoID);
 		}
 
 		static public DataTable INS_DocumentoRecibido(DocumentosRecibidosModel objDocumentosRecibidos)

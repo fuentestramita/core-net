@@ -14,6 +14,8 @@ using System.Web.Services;
 using System.Web.Script.Services;
 using System.Web.Script.Serialization;
 using System.EnterpriseServices;
+using DataLayer;
+using Microsoft.Owin.Security.Provider;
 
 public partial class primera_inscripcion : System.Web.UI.Page
 {
@@ -483,11 +485,10 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	//	rptrDocumentosRecibidos.DataBind();
 	//	return;
 	//}
-
 	public void LlenaDocumentosRecibidos(string PrimeraInscripcionID)
 	{
 		DataTable dtDatos = new DataTable();
-		dtDatos = DocumentosRecibidos.SEL_DocumentosRecibidos("1");
+		dtDatos = DocumentosRecibidos.SEL_DocumentosRecibidos(PrimeraInscripcionID, "-1");
 		if (dtDatos.Rows.Count > 0)
 		{
 			grvDocuemntosRecibidos.DataSource = dtDatos;
@@ -497,8 +498,49 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		return;
 	}
 
+	[WebMethod]
+	public static void LlenaCamposDocumentoRecibido(string DocumentoRecibidoID)
+	{
+		primera_inscripcion csPrimera = new primera_inscripcion();
+		csPrimera.LlenaDocumentoRecibidoEdicion(DocumentoRecibidoID);
+	}
 
-	protected void btnGrabarDoctosRecibidos_OnClick(object sender, EventArgs e)
+	public void LlenaDocumentoRecibidoEdicion(string DocumentoRecibidoID)
+	{
+		PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
+		DataTable dtDatos = new DataTable();
+
+		string PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
+
+
+
+		dtDatos = DocumentosRecibidos.SEL_DocumentosRecibidos(PrimeraInscripcionID, DocumentoRecibidoID);
+		if (dtDatos.Rows.Count > 0)
+		{
+
+			txtDocumentoRecibidoID.Text = dtDatos.Rows[0]["DocumentoRecibidoID"].ToString();
+			ddlTipoDocumento.SelectedValue = dtDatos.Rows[0]["TipoDocumentoID"].ToString();
+			txtNaturalezaAdquisición.Text = dtDatos.Rows[0]["NaturalezaAdquisicion"].ToString();
+			txtNroDocumentoCausa.Text = dtDatos.Rows[0]["NroDocumentoCausa"].ToString();
+			txtValorNetoFactura.Text = dtDatos.Rows[0]["ValorNeto"].ToString();
+			txtValorIvaFactura.Text = dtDatos.Rows[0]["ValorIvaFactura"].ToString();
+			txtValorTotalFactura.Text = dtDatos.Rows[0]["ValorTotalFactura"].ToString();
+			txtLugarDocumento.Text = dtDatos.Rows[0]["LugarDocumento"].ToString();
+			txtFechaDocumento.Text = dtDatos.Rows[0]["FechaDocumento"].ToString();
+			txtNombreAutorizante.Text = dtDatos.Rows[0]["NombreAutorizante"].ToString();
+			txtAcreedorBeneficiarioDemandante.Text = dtDatos.Rows[0]["AcreedorBeneficiarioDemandante"].ToString();
+			txtPDFDocumento.Text = dtDatos.Rows[0]["PDFDocumento"].ToString();
+			txtEmisorDocumentoID.Text = dtDatos.Rows[0]["EmisorDocumentoID"].ToString();
+			txtRutDocumento.Text = dtDatos.Rows[0]["RutEmisorDocumento"].ToString();
+			txtRazonSocialEmisorDocumento.Text = dtDatos.Rows[0]["RazonSocialEmisorDocumento"].ToString();
+
+		}
+
+		return;
+	}
+
+
+		protected void btnGrabarDoctosRecibidos_OnClick(object sender, EventArgs e)
 	{
 		#region ----- DECLARACIONES  -----
 		DocumentosRecibidosModel objDocumentosRecibidos = new DocumentosRecibidosModel();
@@ -576,7 +618,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	public void LlenaDespachos(string PrimeraInscripcionID)
 	{
 		DataTable dtDatos = new DataTable();
-		dtDatos = Despachos.SEL_Despachos("1");
+		dtDatos = Despachos.SEL_Despachos("1","-1");
 		if (dtDatos.Rows.Count > 0)
 		{
 			grvDespachos.DataSource = dtDatos;
@@ -585,6 +627,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 
 		return;
 	}
+
 
 
 
@@ -636,7 +679,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 
 
 
-
+	
 	protected void btnGrabarPrimera_Click(object sender, EventArgs e)
 	{
 
@@ -1046,7 +1089,6 @@ public partial class primera_inscripcion : System.Web.UI.Page
 	}
 
 	[WebMethod]
-	
 	public static string getPersonaEmpresa(string RUT)
 	{
 		PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
@@ -1085,93 +1127,95 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		return js.Serialize(objPersona);
 	}
 
-	//protected void rptrDocumentosRecibidos_ItemDataBound(object sender, RepeaterItemEventArgs e)
-	//{
-	//	if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.Footer)
-	//	{
-	//		DataSet dsAll = Comun.SEL_ALL_ds();
 
-	//		DropDownList ddlTipoDocumento = new DropDownList();
-	//		ddlTipoDocumento = (DropDownList)e.Item.FindControl("ddlTipoDocumento");
+	[WebMethod]
+	public static string getDespacho(string PrimeraInscripcionID, string DespachoID)
+	{
+		primera_inscripcion csPrimera = new primera_inscripcion();
 
-	//		ddlTipoDocumento.DataSource = dsAll.Tables[Comun.Tablas.TIPOSDOCUMENTOS];
-	//		ddlTipoDocumento.DataBind();
-
-	//	}
+		JavaScriptSerializer js = new JavaScriptSerializer();
+		return js.Serialize(csPrimera.LlenaDespachoEdicion(PrimeraInscripcionID, DespachoID));
+	}
 
 
-	//	if (e.Item.ItemType == ListItemType.Header)
-	//	{
-	//		//e.Item.Visible = false;
-	//		DataTable dtDatos = new DataTable();
-	//		dtDatos = DocumentosRecibidos.SEL_DocumentosRecibidos("1");
-	//		if (dtDatos.Rows.Count > 0)
-	//		{
-	//			GridView grvDocuemntosRecibidos = new GridView();
-	//			grvDocuemntosRecibidos = (GridView)e.Item.FindControl("grvDocuemntosRecibidos");
-	//			grvDocuemntosRecibidos.DataSource = dtDatos;
-	//			grvDocuemntosRecibidos.DataBind();
-	//		}
-
-	//	}
-
-	//	if (e.Item.ItemType == ListItemType.AlternatingItem || e.Item.ItemType == ListItemType.Item)
-	//	{
-	//		e.Item.Visible = false;
-	//		DataRowView row = e.Item.DataItem as DataRowView;
-
-	//		TextBox txtTextBox = new TextBox();
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtIDDocumentoRecibido");
-	//		txtTextBox.Text = row["id"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtNaturalezaAdquisición");
-	//		txtTextBox.Text = row["naturalezaAdquisicion"].ToString();
 
 
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtNroDocumentoCausa");
-	//		txtTextBox.Text = row["nroDocumentoCausa"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtRutDocumento");
-	//		txtTextBox.Text = row["rutEmisorDocumento"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtRazonSocialProveedor");
-	//		txtTextBox.Text = row["NombreRazonSocialEmisorDocumento"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtValorNetoFactura");
-	//		txtTextBox.Text = row["valorNeto"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtValorIvaFactura");
-	//		txtTextBox.Text = row["valorIVAFactura"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtValorTotalFactura");
-	//		txtTextBox.Text = row["valorTotalFactura"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtLugarDocumento");
-	//		txtTextBox.Text = row["lugarDocumento"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtFechaDocumento");
-	//		txtTextBox.Text = row["fechaDocumento"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtNombreAutorizante");
-	//		txtTextBox.Text = row["nombreAutorizanteEmisor"].ToString();
-
-	//		txtTextBox = (TextBox)e.Item.FindControl("txtAcreedorBeneficiarioDemandante");
-	//		txtTextBox.Text = row["acreedorBeneficiarioDemandante"].ToString();
-	//	}
-	//}
+	public DespachosModel LlenaDespachoEdicion(string PrimeraInscripcionID, string DespachoID)
+	{
+		DataTable dtDatos;
+		DespachosModel objDespachosModel = new DespachosModel(); 
+		dtDatos = Despachos.SEL_Despachos(PrimeraInscripcionID, DespachoID);
+		if (dtDatos.Rows.Count > 0)
+		{
+			objDespachosModel.DespachoID = dtDatos.Rows[0]["DespachoID"].ToString();
+			objDespachosModel.ItemID = dtDatos.Rows[0]["ItemID"].ToString();
+			objDespachosModel.Origen = dtDatos.Rows[0]["Origen"].ToString();
+			objDespachosModel.SolicitaDespacho = dtDatos.Rows[0]["SolicitaDespacho"].ToString();
+			objDespachosModel.ImprimirParaEntrega = dtDatos.Rows[0]["ImprimirParaEntrega"].ToString();
+			objDespachosModel.CodigoDespachoCourier = dtDatos.Rows[0]["CodigoDespachoCourier"].ToString();
+			objDespachosModel.EntregaEfectuada = dtDatos.Rows[0]["EntregaEfectuada"].ToString();
+			objDespachosModel.PDFEntrega = dtDatos.Rows[0]["PDFEntrega"].ToString();
+			objDespachosModel.fechaRecepcion = dtDatos.Rows[0]["fechaRecepcion"].ToString();
+			objDespachosModel.FechaEntrega = dtDatos.Rows[0]["fechaEntrega"].ToString();
+			objDespachosModel.Observacion = dtDatos.Rows[0]["Observacion"].ToString();
+			objDespachosModel.FechaRecepcionCourier = dtDatos.Rows[0]["fechaRecepcionCourier"].ToString();
+			objDespachosModel.FechaEntregaCourier = dtDatos.Rows[0]["fechaEntregaCourier"].ToString();
+			objDespachosModel.CodigoDespachoCourier = dtDatos.Rows[0]["CodigoDespachoCourier"].ToString();
+			objDespachosModel.ServicioCourierID = dtDatos.Rows[0]["ServicioCourierID"].ToString();
 
 
+		}
+		return objDespachosModel;
+	}
+
+	[WebMethod]
+	public static string getDocumentoRecibido(string PrimeraInscripcionID, string DespachoID)
+	{
+		primera_inscripcion csPrimera = new primera_inscripcion();
+
+		JavaScriptSerializer js = new JavaScriptSerializer();
+		return js.Serialize(csPrimera.LlenaDocumentoRecibido(PrimeraInscripcionID, DespachoID));
+	}
+
+	public DocumentosRecibidosModel LlenaDocumentoRecibido(string PrimeraInscripcionID, string DocumentoRecibidoID)
+	{
+		DataTable dtDatos;
+		DocumentosRecibidosModel objDocumentosRecibidosModel = new DocumentosRecibidosModel();
+		dtDatos = DocumentosRecibidos.SEL_DocumentosRecibidos(PrimeraInscripcionID, DocumentoRecibidoID);
+		if (dtDatos.Rows.Count > 0)
+		{
+
+			objDocumentosRecibidosModel.EmpresaID = EmpresaID;
+			objDocumentosRecibidosModel.UsuarioID = DatosLogin.UsuarioID;
+			objDocumentosRecibidosModel.PrimeraInscripcionID = dtDatos.Rows[0]["PrimeraInscripcionID"].ToString();
+			objDocumentosRecibidosModel.DocumentoRecibidoID = dtDatos.Rows[0]["id"].ToString();
+			objDocumentosRecibidosModel.TipoDocumentoID = dtDatos.Rows[0]["tipoDocumentoId"].ToString();
+			objDocumentosRecibidosModel.NaturalezaAdquisicion = dtDatos.Rows[0]["naturalezaAdquisicion"].ToString();
+			objDocumentosRecibidosModel.NumeroDocumentoCausa = dtDatos.Rows[0]["nroDocumentoCausa"].ToString();
+			objDocumentosRecibidosModel.ValorNeto = dtDatos.Rows[0]["valorNeto"].ToString();
+			objDocumentosRecibidosModel.ValorIVAFactura = dtDatos.Rows[0]["valorIVAFactura"].ToString();
+			objDocumentosRecibidosModel.ValorTotalFactura = dtDatos.Rows[0]["valorTotalFactura"].ToString();
+			objDocumentosRecibidosModel.LugarDocumento = dtDatos.Rows[0]["lugarDocumento"].ToString();
+			objDocumentosRecibidosModel.FechaDocumento = dtDatos.Rows[0]["fechaDocumento"].ToString();
+			objDocumentosRecibidosModel.NombreAutorizanteEmisor = dtDatos.Rows[0]["nombreAutorizanteEmisor"].ToString();
+			objDocumentosRecibidosModel.AcreedorBeneficiarioDemandante = dtDatos.Rows[0]["acreedorBeneficiarioDemandante"].ToString();
+			objDocumentosRecibidosModel.PDF = dtDatos.Rows[0]["pdf"].ToString();
+			objDocumentosRecibidosModel.EmisorDocumentoID = dtDatos.Rows[0]["EmisorDocumentoID"].ToString();
+			objDocumentosRecibidosModel.RutEmisorDocumento = dtDatos.Rows[0]["rutEmisorDocumento"].ToString();
+			objDocumentosRecibidosModel.NombreRazonSocialEmisorDocumento = dtDatos.Rows[0]["NombreRazonSocialEmisorDocumento"].ToString();
+
+
+		}
+		return objDocumentosRecibidosModel;
+	}
+
+
+	//TODO: hacer editar de Docunmentos recibidos 
+	//TODO: revisar grabar de despachos y documentos recibos
+	//TODO: hacer validaciones
+	//TODO: alinear campos numericos a la derecha
+	//TODO: formatear campos rut
+	//TODO: hacer popup para ingreso de datos en ventanas inserciones de documwentos
+	//TODO: formateo de fechas
+	//TODO: dejar desactivados los botones apra agregar Documentos y despachos, se debe grabar el vehiculo nuevo antes de habilitar botones, solo si hay ID de Primera
 }
-
-
-//DONE: revisar que al agregar documento recibido, se actualice la grilla
-//DONE: Emisor documento debe ser un rut
-//DONE: Implementar api que busque y devuelva datos de RUT al salir de la caja de RUT
-//DONE: Asignar busqueda de persona en todas las lupas del formulario
-//TODO: hacer editar de Docunmentos recibidos y despachos
-//TODO: hacer validaciones
-//TODO: alinear campos numericos a la derecha
-//TODO: formatear campos rut
-//TODO: hacer popup para ingreso de datos en ventanas inserciones de documwentos
-//TODO: formateo de fechas
-//TODO: dejar desactivados los botones apra agregar Documentos y despachos, se debe grabar el vehiculo nuevo antes de habilitar botones, solo si hay ID de Primera

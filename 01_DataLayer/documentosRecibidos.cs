@@ -11,18 +11,21 @@ namespace DataLayer
 {
 	static public class documentosRecibidos
 	{
-		static public DataTable SEL_DocumentosRecibidos(string PrimeraInscripcionID)
+		static public DataTable SEL_DocumentosRecibidos(string PrimeraInscripcionID, string DocumentoRecibidoID)
 		{
 			int pPos = 0;
 			DataAccess dAccess = new DataAccess();
 
 			dAccess.Open("tramita_db");
-			SqlParameter[] Param = new SqlParameter[1];
+			SqlParameter[] Param = new SqlParameter[2];
 
 			dAccess.AddParameter(ref pPos, "@PrimeraInscripcionID", PrimeraInscripcionID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@DocumentoRecibidoID", DocumentoRecibidoID, SqlDbType.BigInt, 0, 0, ParameterDirection.Input, ref Param);
 
 			return dAccess.getData("SEL_DocumentosRecibidos", Param).Tables[0];
 		}
+
+
 
 		static public DataTable INS_DocumentoRecibido(DocumentosRecibidosModel objDocumentosRecibidos)
 		{
