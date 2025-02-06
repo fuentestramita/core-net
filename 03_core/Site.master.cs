@@ -11,6 +11,7 @@ using System.Xml.Linq;
 using _02_BusinessLayer;
 using System.Runtime.Remoting.Messaging;
 using System.Activities.Statements;
+using System.IO;
 
 public partial class site : System.Web.UI.MasterPage
 {
@@ -27,6 +28,10 @@ public partial class site : System.Web.UI.MasterPage
 		if (!Page.IsPostBack)
 		{
 			CargaBancos();
+			if (Session["EmpresaID"] != null)
+			{
+				cmbEmpresas.SelectedValue = Session["EmpresaID"].ToString();
+			}
 		}
 
 	}
@@ -106,4 +111,11 @@ public partial class site : System.Web.UI.MasterPage
 	}
 
 
+
+	protected void cmbEmpresas_SelectedIndexChanged(object sender, EventArgs e)
+	{
+		Session["EmpresaID"] = cmbEmpresas.SelectedValue;
+		string reloadFormName = Path.GetFileName(Request.Url.AbsolutePath);
+		Response.Redirect(reloadFormName);
+	}
 }

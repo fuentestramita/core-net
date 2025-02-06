@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Models;
 using Utilities;
@@ -108,5 +110,86 @@ namespace DataLayer
 
 		}
 
+
+		static public DataTable INS_CargabancoPrimera(CargaPrimeraInscripcionModel modelocCargaPrimeraInscripcion)
+		{
+			int pPos = 0;
+			DataAccess dAccess = new DataAccess();
+
+			dAccess.Open("tramita_db");
+			SqlParameter[] Param = new SqlParameter[54];
+
+			dAccess.AddParameter(ref pPos, "@FileName", modelocCargaPrimeraInscripcion.FileName, SqlDbType.VarChar, 100, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@EmpresaID", modelocCargaPrimeraInscripcion.EmpresaID, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@PPU", modelocCargaPrimeraInscripcion.PPU, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@NumeroOperacion", modelocCargaPrimeraInscripcion.NumeroOperacion, SqlDbType.VarChar, 30, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@NumeroFactura", modelocCargaPrimeraInscripcion.NumeroFactura, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@RUTEmisor", modelocCargaPrimeraInscripcion.RUTProveedor, SqlDbType.VarChar, 15, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@DigitoRutEmisor", modelocCargaPrimeraInscripcion.DigitoRutProveedor, SqlDbType.VarChar, 1, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@NombreEmisor", modelocCargaPrimeraInscripcion.NombreProveedor, SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@FechaRecepcion", modelocCargaPrimeraInscripcion.FechaRecepcion, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@TipoVehiculo", modelocCargaPrimeraInscripcion.TipoVehiculo, SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@RutCliente", modelocCargaPrimeraInscripcion.RutCliente, SqlDbType.VarChar, 15, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@RazonSocialCliente", modelocCargaPrimeraInscripcion.RazonSocialCliente, SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Calle", modelocCargaPrimeraInscripcion.Calle, SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Numero", modelocCargaPrimeraInscripcion.Numero, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Complemento", modelocCargaPrimeraInscripcion.Complemento, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Comuna", modelocCargaPrimeraInscripcion.Comuna, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Ciudad", modelocCargaPrimeraInscripcion.Ciudad, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@VencimientoContrato", modelocCargaPrimeraInscripcion.VencimientoContrato, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@CodigoCliente", modelocCargaPrimeraInscripcion.CodigoCliente, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Ejecutivo", modelocCargaPrimeraInscripcion.Ejecutivo, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Sucursal", modelocCargaPrimeraInscripcion.Sucursal, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@CertificadoHomologacion", modelocCargaPrimeraInscripcion.CertificadoHomologacion, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Marca", modelocCargaPrimeraInscripcion.Marca, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Modelo", modelocCargaPrimeraInscripcion.Modelo, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@NroMotor", modelocCargaPrimeraInscripcion.NroMotor, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@NroChasis", modelocCargaPrimeraInscripcion.NroChasis, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@NroVin", modelocCargaPrimeraInscripcion.NroVin, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Color", modelocCargaPrimeraInscripcion.Color, SqlDbType.VarChar, 50, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Traccion", modelocCargaPrimeraInscripcion.Traccion, SqlDbType.VarChar, 50, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@DisposicionEjes", modelocCargaPrimeraInscripcion.DisposicionEjes, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@TipoCarroceria", modelocCargaPrimeraInscripcion.TipoCarroceria, SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@AnoFabricacion", modelocCargaPrimeraInscripcion.AnoFabricacion, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@PesoBrutoVehicular", modelocCargaPrimeraInscripcion.PesoBrutoVehicular, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@CapacidadCarga", modelocCargaPrimeraInscripcion.CapacidadCarga, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@TipoCombustible", modelocCargaPrimeraInscripcion.TipoCombustible, SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@PotenciaMotor", modelocCargaPrimeraInscripcion.PotenciaMotor, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@RutPropietario", modelocCargaPrimeraInscripcion.RutPropietario, SqlDbType.VarChar, 15, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@RazonSocialPropietario", modelocCargaPrimeraInscripcion.RazonSocialPropietario, SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@DireccionPropietario", modelocCargaPrimeraInscripcion.DireccionPropietario, SqlDbType.VarChar, 255, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@NumeroPropietario", modelocCargaPrimeraInscripcion.NumeroPropietario, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@ComunaPropietario", modelocCargaPrimeraInscripcion.ComunaPropietario, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@ContactoPropietario", modelocCargaPrimeraInscripcion.ContactoPropietario, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@TelefonoContacto", modelocCargaPrimeraInscripcion.TelefonoContacto, SqlDbType.VarChar, 50, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@SolicitaDespacho", modelocCargaPrimeraInscripcion.SolicitaDespacho, SqlDbType.VarChar, 3, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@CorrelativoCarga", modelocCargaPrimeraInscripcion.CorrelativoCarga, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@FechaRecepcionDespacho", modelocCargaPrimeraInscripcion.FechaRecepcionDespacho, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@F88", modelocCargaPrimeraInscripcion.F88, SqlDbType.VarChar, 3, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@ValorF88", modelocCargaPrimeraInscripcion.ValorF88, SqlDbType.Decimal, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@ImprimirParaDespacho", modelocCargaPrimeraInscripcion.ImprimirParaDespacho, SqlDbType.VarChar, 3, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@SolicitaDespachoTramita", modelocCargaPrimeraInscripcion.SolicitaDespachoTramita, SqlDbType.VarChar, 3, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@FechaRecepcionPadron", modelocCargaPrimeraInscripcion.FechaRecepcionPadron, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@Origen", modelocCargaPrimeraInscripcion.Origen, SqlDbType.VarChar, 20, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@AnoFiltro", modelocCargaPrimeraInscripcion.AnoFiltro, SqlDbType.Int, 0, 0, ParameterDirection.Input, ref Param);
+			dAccess.AddParameter(ref pPos, "@TAG", modelocCargaPrimeraInscripcion.TAG, SqlDbType.VarChar, 3, 0, ParameterDirection.Input, ref Param);
+
+
+			return dAccess.getData("INS_CargabancoPrimera", Param).Tables[0];
+		}
+
+		static public DataTable PRC_ValidaCargaBancoPrimera(string fileName)
+		{
+			int pPos = 0;
+			DataAccess dAccess = new DataAccess();
+
+			dAccess.Open("tramita_db");
+			SqlParameter[] Param = new SqlParameter[1];
+			dAccess.AddParameter(ref pPos, "@Filename", fileName, SqlDbType.VarChar, 128, 0, ParameterDirection.Input, ref Param);
+			
+			return dAccess.getData("PRC_ValidaCargaBancoPrimera", Param).Tables[0];
+		}
+		
 	}
+
 }

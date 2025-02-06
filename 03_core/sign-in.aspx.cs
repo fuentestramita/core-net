@@ -82,7 +82,8 @@ public partial class sign_in : System.Web.UI.Page
 							System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 							client.Send(message);
 
-							Response.Redirect("auth_code.aspx");
+							Response.Redirect("auth_code.aspx",false);
+							Response.End();
 					}
 
 				}

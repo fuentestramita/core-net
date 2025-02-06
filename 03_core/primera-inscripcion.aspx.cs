@@ -16,6 +16,8 @@ using System.Web.Script.Serialization;
 using System.EnterpriseServices;
 using DataLayer;
 using Microsoft.Owin.Security.Provider;
+using System.Globalization;
+using System.Runtime.InteropServices;
 
 public partial class primera_inscripcion : System.Web.UI.Page
 {
@@ -35,7 +37,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		DropDownList cmbEmpresas = master.FindControl("cmbEmpresas") as DropDownList;
 		EmpresaID = cmbEmpresas.SelectedValue;
 		staticEmpresaID = EmpresaID;
-
+		
 
 		// Aqui rescato datps de la Cookie
 		#region ----- Cookie -----
@@ -56,8 +58,28 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		if (!Page.IsPostBack)
 		{
 			LlenaDDLsGenerales();
+			LlenaDefaultValues();
 			//preLlenaDocumentosDespachos();
 		}
+	}
+
+
+	protected void LlenaDefaultValues()
+	{
+		if(Session["EmpresaID"]!=null)
+			if (Session["EmpresaID"].ToString() == Comun.Clientes.BANCOSANTANDER.ToString())
+			{
+				chkTAG.Checked = false;
+				ddlValorTramita.SelectedValue = "314"; //0.3
+
+			}
+
+		if (EmpresaID == Comun.Clientes.BANCOCHILE.ToString())
+		{
+			chkTAG.Checked = false;
+			ddlValorTramita.SelectedValue = "314"; //0.3
+		}
+
 	}
 
 	protected void btnBuscar_Click(object sender, EventArgs e)
@@ -358,7 +380,7 @@ public partial class primera_inscripcion : System.Web.UI.Page
 
 		ddlAnoProceso.Items.Insert(0, new ListItem("--- SELECCIONE ---", "-1"));
 		int rlinea = 1;
-		for (int i = DateTime.Now.Year + 1; i >= DateTime.Now.Year; i--)
+		for (int i = DateTime.Now.Year + 1; i >= 2024; i--)
 		{
 			ddlAnoProceso.Items.Insert(rlinea, new ListItem(i.ToString(), i.ToString()));
 			rlinea++;
@@ -498,46 +520,46 @@ public partial class primera_inscripcion : System.Web.UI.Page
 		return;
 	}
 
-	[WebMethod]
-	public static void LlenaCamposDocumentoRecibido(string DocumentoRecibidoID)
-	{
-		primera_inscripcion csPrimera = new primera_inscripcion();
-		csPrimera.LlenaDocumentoRecibidoEdicion(DocumentoRecibidoID);
-	}
+	//[WebMethod]
+	//public static void LlenaCamposDocumentoRecibido(string DocumentoRecibidoID)
+	//{
+	//	primera_inscripcion csPrimera = new primera_inscripcion();
+	//	csPrimera.LlenaDocumentoRecibidoEdicion(DocumentoRecibidoID);
+	//}
 
-	public void LlenaDocumentoRecibidoEdicion(string DocumentoRecibidoID)
-	{
-		PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
-		DataTable dtDatos = new DataTable();
+	//public void LlenaDocumentoRecibidoEdicion(string DocumentoRecibidoID)
+	//{
+	//	PersonasEmpresasModel objPersona = new PersonasEmpresasModel();
+	//	DataTable dtDatos = new DataTable();
 
-		string PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
+	//	string PrimeraInscripcionID = txtPrimeraInscripcionID.Text;
 
 
 
-		dtDatos = DocumentosRecibidos.SEL_DocumentosRecibidos(PrimeraInscripcionID, DocumentoRecibidoID);
-		if (dtDatos.Rows.Count > 0)
-		{
+	//	dtDatos = DocumentosRecibidos.SEL_DocumentosRecibidos(PrimeraInscripcionID, DocumentoRecibidoID);
+	//	if (dtDatos.Rows.Count > 0)
+	//	{
 
-			txtDocumentoRecibidoID.Text = dtDatos.Rows[0]["DocumentoRecibidoID"].ToString();
-			ddlTipoDocumento.SelectedValue = dtDatos.Rows[0]["TipoDocumentoID"].ToString();
-			txtNaturalezaAdquisición.Text = dtDatos.Rows[0]["NaturalezaAdquisicion"].ToString();
-			txtNroDocumentoCausa.Text = dtDatos.Rows[0]["NroDocumentoCausa"].ToString();
-			txtValorNetoFactura.Text = dtDatos.Rows[0]["ValorNeto"].ToString();
-			txtValorIvaFactura.Text = dtDatos.Rows[0]["ValorIvaFactura"].ToString();
-			txtValorTotalFactura.Text = dtDatos.Rows[0]["ValorTotalFactura"].ToString();
-			txtLugarDocumento.Text = dtDatos.Rows[0]["LugarDocumento"].ToString();
-			txtFechaDocumento.Text = dtDatos.Rows[0]["FechaDocumento"].ToString();
-			txtNombreAutorizante.Text = dtDatos.Rows[0]["NombreAutorizante"].ToString();
-			txtAcreedorBeneficiarioDemandante.Text = dtDatos.Rows[0]["AcreedorBeneficiarioDemandante"].ToString();
-			txtPDFDocumento.Text = dtDatos.Rows[0]["PDFDocumento"].ToString();
-			txtEmisorDocumentoID.Text = dtDatos.Rows[0]["EmisorDocumentoID"].ToString();
-			txtRutDocumento.Text = dtDatos.Rows[0]["RutEmisorDocumento"].ToString();
-			txtRazonSocialEmisorDocumento.Text = dtDatos.Rows[0]["RazonSocialEmisorDocumento"].ToString();
+	//		txtDocumentoRecibidoID.Text = dtDatos.Rows[0]["DocumentoRecibidoID"].ToString();
+	//		ddlTipoDocumento.SelectedValue = dtDatos.Rows[0]["TipoDocumentoID"].ToString();
+	//		txtNaturalezaAdquisición.Text = dtDatos.Rows[0]["NaturalezaAdquisicion"].ToString();
+	//		txtNroDocumentoCausa.Text = dtDatos.Rows[0]["NroDocumentoCausa"].ToString();
+	//		txtValorNetoFactura.Text = dtDatos.Rows[0]["ValorNeto"].ToString();
+	//		txtValorIvaFactura.Text = dtDatos.Rows[0]["ValorIvaFactura"].ToString();
+	//		txtValorTotalFactura.Text = dtDatos.Rows[0]["ValorTotalFactura"].ToString();
+	//		txtLugarDocumento.Text = dtDatos.Rows[0]["LugarDocumento"].ToString();
+	//		txtFechaDocumento.Text = dtDatos.Rows[0]["FechaDocumento"].ToString();
+	//		txtNombreAutorizante.Text = dtDatos.Rows[0]["NombreAutorizante"].ToString();
+	//		txtAcreedorBeneficiarioDemandante.Text = dtDatos.Rows[0]["AcreedorBeneficiarioDemandante"].ToString();
+	//		txtPDFDocumento.Text = dtDatos.Rows[0]["PDFDocumento"].ToString();
+	//		txtEmisorDocumentoID.Text = dtDatos.Rows[0]["EmisorDocumentoID"].ToString();
+	//		txtRutDocumento.Text = dtDatos.Rows[0]["RutEmisorDocumento"].ToString();
+	//		txtRazonSocialEmisorDocumento.Text = dtDatos.Rows[0]["RazonSocialEmisorDocumento"].ToString();
 
-		}
+	//	}
 
-		return;
-	}
+	//	return;
+	//}
 
 
 		protected void btnGrabarDoctosRecibidos_OnClick(object sender, EventArgs e)

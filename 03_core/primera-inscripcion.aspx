@@ -44,6 +44,49 @@
 	</style>
 	<script language="javascript">
 
+		function NuevoDespacho() {
+			$("#txtDespachoID").val('');
+			$("#txtOrigenDespacho").val('');
+			$("#txtCodigoDespachoCHPX").val('');
+			$("#txtPDFEntrega").val('');
+			$("#txtFechaRecepcionDespacho").val('');
+			$("#txtFechaEntregaDespacho").val('');
+			$("#txtObservacionesEntrega").val('');
+			$("#txtFechaRecepcionCHXP").val('');
+			$("#txtFechaEntregaCHXP").val('');
+			$("#txtCodigoDespachoCHXP").val('');
+
+			$("#ddlCourier").val('-1');
+			$("#ddlItem").val('-1');
+			$("#chkSolicitaDespacho").prop("checked", false);
+			$("#chkImprimirParaEntrega").prop("checked", false);
+
+			$("#chkEntregaEfectuada").prop("checked", false);
+			toggleDespachoModal();
+			return false;
+		}
+
+		function NuevoDocumentoRecibido() {
+			$("#txtDocumentoRecibidoID").val('');
+			$("#ddlTipoDocumento").val('-1');
+			$("#txtNaturalezaAdquisición").val('');
+			$("#txtNroDocumentoCausa").val('');
+			$("#txtEmisorDocumentoID").val('');
+			$("#txtRutDocumento").val('');
+			$("#txtRazonSocialEmisorDocumento").val('');
+			$("#txtValorNetoFactura").val('');
+			$("#txtValorTotalFactura").val('');
+			$("#txtValorIvaFactura").val('');
+			$("#txtLugarDocumento").val('');
+			$("#txtFechaDocumento").val('');
+			$("#txtNombreAutorizante").val('');
+			$("#txtAcreedorBeneficiarioDemandante").val('');
+			$("#txtPDFDocumento").val('');
+			
+			return toggleDoctosRecibidosModal();
+		}
+
+
 		function BuscaPersona(Origen, IDDestino, Destino) {
 			PageMethods.getPersonaEmpresa(Origen.val(), onSuccess, onFailure);
 			function onSuccess(result) {
@@ -103,7 +146,7 @@
 			function onFailure(error) {
 				alert("Error " + error.Message);
 			}
-			return toggleDespachosHeader();
+			return toggleDespachoModal();
 			//return false;
 		}
 
@@ -130,9 +173,6 @@
 					$("#txtNombreAutorizante").val(JSON.parse(result).NombreAutorizanteEmisor);
 					$("#txtAcreedorBeneficiarioDemandante").val(JSON.parse(result).AcreedorBeneficiarioDemandante);
 					$("#txtPDFDocumento").val(JSON.parse(result).PDF);
-					
-
-
 
 				}
 				//return false;
@@ -140,7 +180,7 @@
 			function onFailure(error) {
 				alert("Error " + error);
 			}
-			return toggleDoctosRecibidosHeader();
+			return toggleDoctosRecibidosModal();
 			//return false;
 		}
 
@@ -826,7 +866,7 @@
 						<div>
 							<div>
 								<div class="btn-group">
-									<button class="btn bg-warning" onclick="return( toggleDoctosRecibidosHeader());">
+									<button class="btn bg-warning" onclick="return( NuevoDocumentoRecibido());">
 										<span class="oi oi-plus"></span>
 									</button>
 								</div>
@@ -867,8 +907,8 @@
 
 								<div id="DoctosRecibidosHeader">
 
-										<h1 class="page-title">DOCUMENTOS RECIBIDOS</h1>
-									<asp:TextBox ID="txtDocumentoRecibidoID" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
+									<h1 class="page-title">DOCUMENTOS RECIBIDOS</h1>
+									<asp:TextBox ID="txtDocumentoRecibidoID" Text="" Style="display: none; border-color: red;" placeholder="" runat="server"></asp:TextBox>
 									<div class="form-group">
 										<label class="form-label-lg" for="select2-data-remote">Tipo Documento</label>
 										<asp:DropDownList ID="ddlTipoDocumento" DataValueField="ID" DataTextField="tipoDocumento" CssClass="form-input-lg" runat="server">
@@ -951,7 +991,7 @@
 
 						<div>
 							<div class="btn-group">
-								<button id="OpenModalCreaDespacho" class="btn bg-warning" onclick="return( toggleDespachosHeader());">
+								<button id="OpenModalCreaDespacho" class="btn bg-warning" onclick="return( NuevoDespacho());">
 									<span class="oi oi-plus"></span>
 								</button>
 							</div>
@@ -995,7 +1035,7 @@
 
 								<div id="DespachosHeader">
 									<h1 class="page-title">DESPACHOS</h1>
-									<asp:TextBox ID="txtDespachoID" Text="-1" CssClass="form-input-lg" placeholder="" Visible="false" runat="server"></asp:TextBox>
+									<asp:TextBox ID="txtDespachoID" Text="" style="display:none;border-color:red" placeholder="" runat="server"></asp:TextBox>
 									<div class="form-group">
 										<label class="form-label-lg" for="select2-data-remote">Item</label>
 										<asp:DropDownList ID="ddlItem" CssClass="form-input-lg" runat="server">
@@ -1079,7 +1119,7 @@
 		<!-- /.page-section -->
 	</div>
 	<script type="text/javascript">
-		function toggleDoctosRecibidosHeader() {
+		function toggleDoctosRecibidosModal() {
 			var modal = document.getElementById("modalDoctosRecibidos");
 			modal.style.display = "block";
 
@@ -1092,7 +1132,7 @@
 			return false;
 		}
 
-		function toggleDespachosHeader() {
+		function toggleDespachoModal() {
 			var modal = document.getElementById("modalDespacho");
 			modal.style.display = "block";
 

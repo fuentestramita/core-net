@@ -3,6 +3,9 @@ using System.Net.Mail;
 using System.Net;
 using System.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using System.Data;
+using System.IO;
+using ExcelDataReader;
 
 namespace Utilities
 {
@@ -61,7 +64,8 @@ namespace Utilities
 				return valor;
 		}
 
-		static public Object isNull(string valor, Object Retorno)
+
+		static public string isNull(string valor, string Retorno)
 		{
 			if (valor == null || valor == "")
 				return Retorno;
@@ -69,6 +73,45 @@ namespace Utilities
 				return valor;
 		}
 
+
+		static public object isNull(string valor, object Retorno)
+		{
+			if (valor == null || valor == "")
+				return Retorno;
+			else
+				return valor;
+		}
+
+		// lectura archivo excel
+		static public DataTable ReadExcelFileToDataTable(string filePath)
+		{
+
+			DataTable dataTable = new DataTable();
+
+			// Configura el sistema de lectura para soportar codificación
+			//System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+
+			using (FileStream stream = File.Open(filePath, FileMode.Open, FileAccess.Read))
+			{
+				using (IExcelDataReader reader = ExcelReaderFactory.CreateReader(stream))
+				{
+					// Convierte la hoja de cálculo en un DataSet
+					var result = reader.AsDataSet(new ExcelDataSetConfiguration()
+					{
+						ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+						{
+							UseHeaderRow = true // Usa la primera fila como encabezados
+						}
+					});
+
+					// Toma la primera hoja del archivo Excel
+					dataTable = result.Tables[0];
+					reader.Close();
+				}
+				stream.Close();
+			}
+			return dataTable;
+		}
 
 	}
 }

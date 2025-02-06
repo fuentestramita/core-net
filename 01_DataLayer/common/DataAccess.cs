@@ -47,10 +47,11 @@ namespace DataLayer
 
       DateTime dtInicio = DateTime.Now;
 
+			DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
+			
       DataSet dsResultado = new DataSet();
       daConsulta.Fill(dsResultado);
       Close();
-      DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
       return dsResultado;
     }
 
@@ -64,9 +65,9 @@ namespace DataLayer
 
       DataSet dsResultado = new DataSet();
       DateTime dtInicio = DateTime.Now;
-      daConsulta.Fill(dsResultado);
+			DebugProcedure(cbStringDB + ".." + StoreProcedure, null, dtInicio);
+			daConsulta.Fill(dsResultado);
       Close();
-      DebugProcedure(cbStringDB + ".." + StoreProcedure, null, dtInicio);
       return dsResultado;
     }
 
@@ -83,10 +84,10 @@ namespace DataLayer
 					daConsulta.SelectCommand.Parameters.Add(pParameters[i]);
 
 
+				DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
 				DataSet dsResultado = new DataSet();
 				daConsulta.Fill(dsResultado);
 				Close();
-        DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
         return dsResultado.Tables[0];
       }
       catch
@@ -137,9 +138,9 @@ namespace DataLayer
         for (int i = 0; i < pParameters.Length; i++)
           daConsulta.SelectCommand.Parameters.Add(pParameters[i]);
 
-        daConsulta.SelectCommand.ExecuteNonQuery();
+				DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
+				daConsulta.SelectCommand.ExecuteNonQuery();
         Close();
-        DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
         return daConsulta.SelectCommand.Parameters[pParameters.Length - 1].Value.ToString();
       }
       catch
@@ -165,9 +166,9 @@ namespace DataLayer
         for (int i = 0; i < pParameters.Length; i++)
           daConsulta.SelectCommand.Parameters.Add(pParameters[i]);
 
-        daConsulta.SelectCommand.ExecuteNonQuery();
+				DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
+				daConsulta.SelectCommand.ExecuteNonQuery();
         Close();
-        DebugProcedure(cbStringDB + ".." + StoreProcedure, pParameters, dtInicio);
         return (Int64)daConsulta.SelectCommand.Parameters[pParameters.Length - 1].Value;
       }
       catch

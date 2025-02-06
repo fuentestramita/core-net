@@ -230,3 +230,10 @@
 		background-color: #660000;
 		border-color: #3f0000;
 	}
+
+
+.table .thead-blue th {
+	color: #fff;
+	background-color: #0179a8;
+	border-color: #346cb0;
+}

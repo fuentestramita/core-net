@@ -20,5 +20,29 @@ namespace DataLayer
 		}
 
 
+
+		static public  void BulkInsertToSql(DataTable dataTable, string tableName)
+		{
+			string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["tramita_db"].ToString();
+			using (SqlConnection connection = new SqlConnection(connectionString))
+			{
+				connection.Open();
+				using (SqlBulkCopy bulkCopy = new SqlBulkCopy(connection))
+				{
+					bulkCopy.DestinationTableName = tableName;
+
+					// Mapea las columnas del DataTable a las columnas de la tabla SQL
+					foreach (DataColumn column in dataTable.Columns)
+					{
+						bulkCopy.ColumnMappings.Add(column.ColumnName, column.ColumnName);
+					}
+
+					bulkCopy.WriteToServer(dataTable);
+				}
+			}
+		}
 	}
+
+
+
 }

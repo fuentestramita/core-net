@@ -21,9 +21,17 @@ namespace BusinessLayer
 			return DataLayer.primeraInscripcion.INS_PrimeraInscripcion(modeloPrimeraInscripcion);
 		}
 
+		static public DataTable INS_CargabancoPrimera(CargaPrimeraInscripcionModel modelocCargaPrimeraInscripcion)
+		{
+
+			return DataLayer.primeraInscripcion.INS_CargabancoPrimera(modelocCargaPrimeraInscripcion);
+		}
+
+		static public DataTable PRC_ValidaCargaBancoPrimera(string fileName)
+		{
+			return DataLayer.primeraInscripcion.PRC_ValidaCargaBancoPrimera(fileName);
+		}
+
 	}
-
-
-
-}
+	}
 

@@ -55,7 +55,7 @@
 	<!-- END THEME STYLES -->
 </head>
 <body>
-	<form runat="server">
+	<form id="masterForm" runat="server">
 		<!-- .app -->
 		<div class="app">
 			<!-- .app-header -->
@@ -87,7 +87,7 @@
 							<!-- .top-bar-search -->
 							<div class="top-bar-search">
 								<div class="input-group input-group-search">
-									<asp:DropDownList ID="cmbEmpresas" class="custom-select" Style="text-transform: uppercase" onchange="changeColor(this);" runat="server">
+									<asp:DropDownList ID="cmbEmpresas" class="custom-select" Style="text-transform: uppercase" OnSelectedIndexChanged="cmbEmpresas_SelectedIndexChanged" AutoPostBack="True"  runat="server">
 									</asp:DropDownList>
 									<div class="sc-fubDmA jNEgUs" color="#ec0000"></div>
 								</div>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DataLayer;
+using static BusinessLayer.Comun;
 
 namespace BusinessLayer
 {
@@ -48,5 +49,24 @@ namespace BusinessLayer
 		}
 
 
+		static void BulkInsertToSql(DataTable dataTable, string tableName)
+		{
+			DataLayer.comun.BulkInsertToSql(dataTable, tableName);
+			return;
+		}
+
+
+		public static class Clientes
+		{
+			public const int BANCOCORPBANCA = 1;
+			public const int BANCOSANTANDER = 2;
+			public const int BANCOCHILE = 3;
+			public const int BANCOITAU = 4;
+			public const int BANCOCREDITOEINVERSIONES = 5;
+			public const int SCANIA = 6;
+			public const int SANTANDERFACTORY = 7;
+			public const int BODEGASGENERALESDELEASING = 8;
+			public const int CLIENTEPRUEBAS = 9;
+		}
 	}
 }

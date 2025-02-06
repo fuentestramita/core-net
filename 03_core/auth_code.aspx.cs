@@ -27,7 +27,7 @@ public partial class auth_code : System.Web.UI.Page
 
 		}
 		else
-			Response.Redirect("sign-in.aspx");
+			Response.Redirect("sign-in.aspx", false);
 	}
 
 	protected void btnLogin_Click(object sender, ImageClickEventArgs e)
@@ -38,10 +38,10 @@ public partial class auth_code : System.Web.UI.Page
 		{
 			Response.Cookies["CoreInfo"].Expires = DateTime.Now.AddDays(-1);
 			Session.Abandon();
-			Response.Redirect("sign-in.aspx");
+			Response.Redirect("sign-in.aspx", false);
 		}
 		else
-			Response.Redirect("default.aspx");
+			Response.Redirect("default.aspx", false);
 
 	}
 }
